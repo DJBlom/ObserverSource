@@ -1,9 +1,0 @@
-# Ignoring unwanted files when pushing to remote
-
-# Ignoring the build folder
-build/
-
-# Ignoring certain test folders
-test/lib
-test/objs
-test/UnitTests
