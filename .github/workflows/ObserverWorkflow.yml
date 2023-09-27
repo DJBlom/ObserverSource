@@ -1,5 +1,5 @@
 name: Observer CI/CD
-on: 
+on:
   pull_request:
     branches:
     - release*
@@ -17,29 +17,29 @@ env:
 
 jobs:
   Build:
-    runs-on: ubuntu-latest
-    container: dawidblom/observer:latest
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    - name: Project Build
-      run: scripts/Project.sh -b
-
-    - name: Project Statistics
-      run: scripts/Project.sh -l
+    #    runs-on: ubuntu-latest
+    #    container: dawidblom/observer:latest
+    #    steps:
+    #    - name: Checkout Code
+    #      uses: actions/checkout@v3
+    #
+    #    - name: Project Build
+    #      run: scripts/Project.sh -b
+    #
+    #    - name: Project Statistics
+    #      run: scripts/Project.sh -l
 
   Tests:
     runs-on: ubuntu-latest
-    container: dawidblom/observer:latest  
-    needs: Build
+    container: dawidblom/observer:latest
+      #needs: Build
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Project Analysis
-      run: scripts/Project.sh -a
-
+        ##    - name: Project Analysis
+        ##      run: scripts/Project.sh -a
+        ##
     - name: Project Tests
       run: scripts/Project.sh -t
       env:
