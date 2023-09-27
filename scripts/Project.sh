@@ -17,10 +17,18 @@ BIN_DIR=project
 TEST_DIR=test
 BUILD_TYPE="Debug"
 BUILD_DIR=$(pwd)/build
+TOOLCHAIN=CrossToolchain.cmake
 
 rm -rf $BUILD_DIR/*
 
-Build()
+TargetBuild()
+{
+    mkdir -p $BUILD_DIR/$BIN_DIR
+    $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_PROJECT=ON -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
+    $CMAKE --build $BUILD_DIR/$BIN_DIR
+}
+
+HostBuild()
 {
     mkdir -p $BUILD_DIR/$BIN_DIR
     $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_PROJECT=ON 
@@ -119,9 +127,10 @@ Help()
     echo "Description:"
     echo "This script is used to build, test, analyze, and provide code coverage on a project."
     echo
-    echo "Usage: ./Project.sh [-b|t|a|c|i|h]"
+    echo "Usage: ./Project.sh [-b|n|t|a|c|i|h]"
     echo "options:"
-    echo "      -b    Build the project"
+    echo "      -b    Build the project for the target"
+    echo "      -n    Build the project for the host (Native)"
     echo "      -t    Execute unit test"
     echo "      -a    Run static code analysis"
     echo "      -c    Generate a code coverage report"
@@ -131,11 +140,14 @@ Help()
     echo
 }
 
-while getopts ":btaclih" option;
+while getopts ":bntaclih" option;
 do
     case $option in
         b) 
-            Build
+            TargetBuild
+            exit;;
+        n)
+            HostBuild
             exit;;
         t) 
             Test
