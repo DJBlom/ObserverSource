@@ -10,7 +10,7 @@
 # files are found.
 ############################################################################
 cmake_minimum_required(VERSION 3.25)
-project(Project_Name VERSION 0.0.1 LANGUAGES CXX C ASM)
+project(Observer VERSION 0.0.1 LANGUAGES CXX C ASM)
 
 option(BUILD_PROJECT "Build the project" OFF)
 option(UNIT_TESTS "Perform unit tests" OFF)
