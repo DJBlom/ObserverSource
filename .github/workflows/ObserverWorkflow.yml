@@ -5,12 +5,18 @@ on:
     - release*
     - main
     - develop
+    - feature/*
+    - hotfix/*
+    - refactor/*
 
   push:
     branches:
+    - release*
+    - main
     - develop
     - feature/*
     - hotfix/*
+    - refactor/*
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
@@ -32,6 +38,7 @@ jobs:
   Tests:
     runs-on: ubuntu-latest
     container: dawidblom/observer:latest
+    needs: Build
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
@@ -46,3 +53,15 @@ jobs:
 
     - name: Project Coverage
       run: scripts/Project.sh -c
+
+  Deploy:
+    runs-on: ubuntu-latest
+    container: dawidblom/observer:latest
+    needs: Test
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Artifact Deployment
+        #if: ${{ github.event.pull_request.base.ref == 'release' && github.event.action == 'opened' }}
+        run: echo "Deploying"
