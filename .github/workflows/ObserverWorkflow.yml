@@ -57,7 +57,7 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     container: dawidblom/observer:latest
-    needs: Test
+    needs: Tests
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
