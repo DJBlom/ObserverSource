@@ -80,6 +80,31 @@ Coverage()
     fi
 }
 
+InstallPackages()
+{
+    packages=(cloc lcov cppcheck dh-autoreconf automake autoconf)
+    DNF=$(which dnf)
+
+    if [[ ! -z $DNF ]];
+    then
+        sudo dnf -y install ${packages[@]}
+    fi
+
+    if [[ -z "$CPPUTEST_HOME" ]];
+    then
+        cd /opt
+        sudo git clone https://github.com/cpputest/cpputest.git
+        cd cpputest
+        sudo autoreconf --install 
+        sudo ./configure 
+        sudo make tdd
+        echo "export CPPUTEST_HOME=/opt/cpputest/" >> /home/$(whoami)/.bashrc
+        source /home/$(whoami)/.bashrc
+    else
+        echo "CppUTest is already installed @ $CPPUTEST_HOME"
+    fi
+}
+
 LineCount()
 {
     echo
@@ -94,18 +119,19 @@ Help()
     echo "Description:"
     echo "This script is used to build, test, analyze, and provide code coverage on a project."
     echo
-    echo "Usage: ./Project.sh [-b|t|a|c|h]"
+    echo "Usage: ./Project.sh [-b|t|a|c|i|h]"
     echo "options:"
-    echo "      b    Build the project"
-    echo "      t    Execute unit test"
-    echo "      a    Run static code analysis"
-    echo "      c    Generate a code coverage report"
-    echo "      l    Provides the total line count of the project"
-    echo "      h    Displays this help message"
+    echo "      -b    Build the project"
+    echo "      -t    Execute unit test"
+    echo "      -a    Run static code analysis"
+    echo "      -c    Generate a code coverage report"
+    echo "      -l    Provides the total line count of the project"
+    echo "      -i    Installs all required packages for the project"
+    echo "      -h    Displays this help message"
     echo
 }
 
-while getopts ":btaclh" option;
+while getopts ":btaclih" option;
 do
     case $option in
         b) 
@@ -122,6 +148,9 @@ do
             exit;;
         l) 
             LineCount
+            exit;;
+        i)
+            InstallPackages
             exit;;
         h)
             Help
