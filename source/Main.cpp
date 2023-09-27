@@ -11,6 +11,7 @@
 int main(void)
 {
     std::cout << "Hello, World.\n";
+    std::cout << "DockerFile, is done.\n";
 
     return 0;
 }
