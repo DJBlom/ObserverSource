@@ -12,49 +12,89 @@
 ############################################################################
 #!/bin/bash
 
+PROJECT_NAME=observer
+PROJECT_VERSION_NUM=0.0.1
+PROJECT_VERSION_PREFIX=-v
+BIN_SUFFIX=.elf
 CMAKE=cmake
 BIN_DIR=project
 TEST_DIR=test
-BUILD_TYPE="Debug"
-BUILD_DIR=$(pwd)/build
 TOOLCHAIN=CrossToolchain.cmake
+BUILD_TYPE="Debug"
+BUILD_DIR=build
+
 
 rm -rf $BUILD_DIR/*
+
+VersionTargetBuild()
+{
+    $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+                                                            -DCMAKE_PROJECT_NAME=$PROJECT_NAME \
+                                                            -DCMAKE_PROJECT_VERSION=$PROJECT_VERSION_PREFIX$PROJECT_VERSION_NUM \
+                                                            -DCMAKE_EXECUTABLE_SUFFIX=$BIN_SUFFIX \
+                                                            -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN \
+                                                            -DBUILD_WITH_PROJECT_VERSION=ON \
+                                                            -DBUILD_PROJECT=ON
+    $CMAKE --build $BUILD_DIR/$BIN_DIR
+    
+    DEPLOY_DIR=$BUILD_DIR/$PROJECT_NAME$PROJECT_VERSION_PREFIX$PROJECT_VERSION_NUM 
+    mkdir -p $DEPLOY_DIR
+    cp -r $BUILD_DIR/$BIN_DIR/$PROJECT_NAME$PROJECT_VERSION_PREFIX$PROJECT_VERSION_NUM$BIN_SUFFIX $DEPLOY_DIR
+    tar cvf $DEPLOY_DIR.tar.gz $DEPLOY_DIR
+}
 
 TargetBuild()
 {
     mkdir -p $BUILD_DIR/$BIN_DIR
-    $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_PROJECT=ON -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
+    $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+                                                            -DCMAKE_PROJECT_NAME=$PROJECT_NAME \
+                                                            -DCMAKE_EXECUTABLE_SUFFIX=$BIN_SUFFIX \
+                                                            -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN \
+                                                            -DBUILD_PROJECT=ON
     $CMAKE --build $BUILD_DIR/$BIN_DIR
 }
 
 HostBuild()
 {
     mkdir -p $BUILD_DIR/$BIN_DIR
-    $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_PROJECT=ON 
+    $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+                                                            -DCMAKE_PROJECT_NAME=$PROJECT_NAME \
+                                                            -DCMAKE_EXECUTABLE_SUFFIX=$BIN_SUFFIX \
+                                                            -DBUILD_PROJECT=ON
     $CMAKE --build $BUILD_DIR/$BIN_DIR
 }
 
 Test()
 {
+    PROJECT_TEST=Test$PROJECT_NAME
     mkdir -p $BUILD_DIR/$TEST_DIR
-    $CMAKE -S . -B $BUILD_DIR/$TEST_DIR --warn-uninitialized -DUNIT_TESTS=ON 
+    $CMAKE -S . -B $BUILD_DIR/$TEST_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+                                                             -DCMAKE_PROJECT_NAME=$PROJECT_TEST \
+                                                             -DCMAKE_EXECUTABLE_SUFFIX=$BIN_SUFFIX \
+                                                             -DUNIT_TESTS=ON
     $CMAKE --build $BUILD_DIR/$TEST_DIR
 }
 
 Analyze()
 {
     mkdir -p $BUILD_DIR/$BIN_DIR
-    $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_PROJECT=ON -DSTATIC_CODE_ANALYSIS=ON
+    $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+                                                            -DCMAKE_PROJECT_NAME=$PROJECT_NAME \
+                                                            -DCMAKE_EXECUTABLE_SUFFIX= \
+                                                            -DSTATIC_CODE_ANALYSIS=ON 
     $CMAKE --build $BUILD_DIR/$BIN_DIR
     cd $BUILD_DIR/$BIN_DIR
-    make analysis
+    make $PROJECT_NAME
 }
 
 Coverage()
 {
+    PROJECT_COVERAGE=${PROJECT_NAME}Coverage
     mkdir -p $BUILD_DIR/$TEST_DIR
-    $CMAKE -S . -B $BUILD_DIR/$TEST_DIR --warn-uninitialized -DCODE_COVERAGE=ON 
+    $CMAKE -S . -B $BUILD_DIR/$TEST_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+                                                             -DCMAKE_PROJECT_NAME=$PROJECT_COVERAGE \
+                                                             -DCMAKE_EXECUTABLE_SUFFIX=$BIN_SUFFIX \
+                                                             -DCODE_COVERAGE=ON
     $CMAKE --build $BUILD_DIR/$TEST_DIR
     lcov --rc lcov_branch_coverage=1 --directory . --capture --output-file $BUILD_DIR/$TEST_DIR/coverage.info
     lcov --rc lcov_branch_coverage=1 --remove $BUILD_DIR/$TEST_DIR/coverage.info '/opt/*' --output-file $BUILD_DIR/$TEST_DIR/coverage.info
@@ -87,6 +127,7 @@ Coverage()
         exit 0
     fi
 }
+
 
 InstallPackages()
 {
@@ -127,8 +168,9 @@ Help()
     echo "Description:"
     echo "This script is used to build, test, analyze, and provide code coverage on a project."
     echo
-    echo "Usage: ./Project.sh [-b|n|t|a|c|i|h]"
+    echo "Usage: ./Project.sh [-d|b|n|t|a|c|i|h]"
     echo "options:"
+    echo "      -d    Build the project for the target for deployment"
     echo "      -b    Build the project for the target"
     echo "      -n    Build the project for the host (Native)"
     echo "      -t    Execute unit test"
@@ -140,9 +182,12 @@ Help()
     echo
 }
 
-while getopts ":bntaclih" option;
+while getopts ":dbntaclih" option;
 do
     case $option in
+        d)
+            VersionTargetBuild
+            exit;;
         b) 
             TargetBuild
             exit;;
@@ -171,10 +216,3 @@ do
             echo "Usage: run [./Project.sh -h] for help"
     esac
 done
-
-
-
-
-
-
-

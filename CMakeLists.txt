@@ -10,13 +10,20 @@
 # files are found.
 ############################################################################
 cmake_minimum_required(VERSION 3.25)
-project(Observer VERSION 0.0.1 LANGUAGES CXX C ASM)
 
+option(BUILD_WITH_PROJECT_VERSION "Add versioning to the project name" OFF)
 option(BUILD_PROJECT "Build the project" OFF)
 option(UNIT_TESTS "Perform unit tests" OFF)
 option(STATIC_CODE_ANALYSIS "Perform static code analysis" OFF)
 option(CODE_COVERAGE "Perform code coverage" OFF)
 
+if(BUILD_WITH_PROJECT_VERSION)
+    project(${CMAKE_PROJECT_NAME}${CMAKE_PROJECT_VERSION}${CMAKE_EXECUTABLE_SUFFIX} LANGUAGES CXX C ASM)
+    message("Building the project with a version tag")
+else()
+    project(${CMAKE_PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX} LANGUAGES CXX C ASM)
+    message("Building the project without any version tag")
+endif()
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
@@ -24,6 +31,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 
 
 if(BUILD_PROJECT)
@@ -93,17 +101,18 @@ endif()
 if (STATIC_CODE_ANALYSIS)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
     set(CMAKE_CXX_CPPCHECK "cppcheck")
-    if (CMAKE_CXX_CPPCHECK)
+    if (CMAKE_CXX_CPPCHECK OR CMAKE_C_CPPCHECK)
         list(APPEND CMAKE_CXX_CPPCHECK 
             "--enable=all"
+            "--std=c11"
             "--std=c++20"
             "--error-exitcode=1"
             "--platform=unix64"
             "--suppress=missingInclude"
-            "${CMAKE_SOURCE_DIR}/source"
+            "${CMAKE_SOURCE_DIR}/source/"
         )
 
-        add_custom_target(analysis DEPENDS ${PROJECT_NAME}
+        add_custom_target(${PROJECT_NAME}
             COMMAND ${CMAKE_CXX_CPPCHECK}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             COMMENT "Running static code analysis..." 
