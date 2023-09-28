@@ -63,5 +63,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Artifact Deployment
-        #if: ${{ github.event.pull_request.base.ref == 'release' && github.event.action == 'opened' }}
-        run: echo "Deploying"
+        if: ${{ github.event.pull_request.base.ref == 'release' && github.event.action == 'opened' }}
+        run: |
+          echo "Deploying Artifact"
+          ./scripts/Project.sh -d
