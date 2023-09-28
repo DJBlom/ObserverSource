@@ -2,10 +2,10 @@
 # Contents: Top Most CMakeLists.txt file
 # Author: Dawid Blom
 # Date: September 15, 2023
-# 
-# NOTE: 
+#
+# NOTE:
 # This file is a utility file used to build and test the project base on
-# arguments passed to it (run ./scrips/Project.sh -h, for a list of 
+# arguments passed to it (run ./scrips/Project.sh -h, for a list of
 # arguments). It provides the capability to run your unit tests, static
 # code analysis, code coverage, get a line project's line count, and build
 # your project.
@@ -26,18 +26,18 @@ BUILD_DIR=build
 
 rm -rf $BUILD_DIR/*
 
-VersionTargetBuild()
+DeployTargetBuild()
 {
     $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
                                                             -DCMAKE_PROJECT_NAME=$PROJECT_NAME \
                                                             -DCMAKE_PROJECT_VERSION=$PROJECT_VERSION_PREFIX$PROJECT_VERSION_NUM \
                                                             -DCMAKE_EXECUTABLE_SUFFIX=$BIN_SUFFIX \
                                                             -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN \
-                                                            -DBUILD_WITH_PROJECT_VERSION=ON \
+                                                            -DBUILD_PROJECT_FOR_DEPLOY=ON \
                                                             -DBUILD_PROJECT=ON
     $CMAKE --build $BUILD_DIR/$BIN_DIR
-    
-    DEPLOY_DIR=$BUILD_DIR/$PROJECT_NAME$PROJECT_VERSION_PREFIX$PROJECT_VERSION_NUM 
+
+    DEPLOY_DIR=$BUILD_DIR/$PROJECT_NAME$PROJECT_VERSION_PREFIX$PROJECT_VERSION_NUM
     mkdir -p $DEPLOY_DIR
     cp -r $BUILD_DIR/$BIN_DIR/$PROJECT_NAME$PROJECT_VERSION_PREFIX$PROJECT_VERSION_NUM$BIN_SUFFIX $DEPLOY_DIR
     tar cvf $DEPLOY_DIR.tar.gz $DEPLOY_DIR
@@ -81,7 +81,7 @@ Analyze()
     $CMAKE -S . -B $BUILD_DIR/$BIN_DIR --warn-uninitialized -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
                                                             -DCMAKE_PROJECT_NAME=$PROJECT_NAME \
                                                             -DCMAKE_EXECUTABLE_SUFFIX= \
-                                                            -DSTATIC_CODE_ANALYSIS=ON 
+                                                            -DSTATIC_CODE_ANALYSIS=ON
     $CMAKE --build $BUILD_DIR/$BIN_DIR
     cd $BUILD_DIR/$BIN_DIR
     make $PROJECT_NAME
@@ -99,6 +99,7 @@ Coverage()
     lcov --rc lcov_branch_coverage=1 --directory . --capture --output-file $BUILD_DIR/$TEST_DIR/coverage.info
     lcov --rc lcov_branch_coverage=1 --remove $BUILD_DIR/$TEST_DIR/coverage.info '/opt/*' --output-file $BUILD_DIR/$TEST_DIR/coverage.info
     lcov --rc lcov_branch_coverage=1 --list $BUILD_DIR/$TEST_DIR/coverage.info > $BUILD_DIR/$TEST_DIR/coverage.txt
+    genhtml --rc lcov_branch_coverage=1 --legend -o $BUILD_DIR/$TEST_DIR/html $BUILD_DIR/$TEST_DIR/coverage.info
     total_coverage=$(grep -F "Total:" $BUILD_DIR/$TEST_DIR/coverage.txt | tr -d ' ')
 
     # Extract the line coverage percentage
@@ -144,8 +145,8 @@ InstallPackages()
         cd /opt
         sudo git clone https://github.com/cpputest/cpputest.git
         cd cpputest
-        sudo autoreconf --install 
-        sudo ./configure 
+        sudo autoreconf --install
+        sudo ./configure
         sudo make tdd
         echo "export CPPUTEST_HOME=/opt/cpputest/" >> /home/$(whoami)/.bashrc
         source /home/$(whoami)/.bashrc
@@ -159,7 +160,7 @@ LineCount()
     echo
     echo "Total project line count."
     cloc .
-    echo 
+    echo
 }
 
 Help()
@@ -170,14 +171,14 @@ Help()
     echo
     echo "Usage: ./Project.sh [-d|b|n|t|a|c|i|h]"
     echo "options:"
-    echo "      -d    Build the project for the target for deployment"
+    echo "      -d    Build for the deployment of the project"
     echo "      -b    Build the project for the target"
     echo "      -n    Build the project for the host (Native)"
     echo "      -t    Execute unit test"
     echo "      -a    Run static code analysis"
     echo "      -c    Generate a code coverage report"
     echo "      -l    Provides the total line count of the project"
-    echo "      -i    Installs all required packages for the project"
+    echo "      -i    Installs all required packages for this script to work"
     echo "      -h    Displays this help message"
     echo
 }
@@ -186,24 +187,24 @@ while getopts ":dbntaclih" option;
 do
     case $option in
         d)
-            VersionTargetBuild
+            DeployTargetBuild
             exit;;
-        b) 
+        b)
             TargetBuild
             exit;;
         n)
             HostBuild
             exit;;
-        t) 
+        t)
             Test
             exit;;
-        a) 
+        a)
             Analyze
             exit;;
-        c) 
-            Coverage 
+        c)
+            Coverage
             exit;;
-        l) 
+        l)
             LineCount
             exit;;
         i)
