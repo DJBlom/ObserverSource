@@ -23,6 +23,7 @@ static const pid_t mainPID = getpid();
 /**********************************TEST LIST************************************
  * 1) Setup the core system
  * 2) Clean the core system up
+ * 3) The should not not continue if the PID is fake
  ******************************************************************************/
 TEST_GROUP(CoreTest)
 {
@@ -39,7 +40,13 @@ TEST_GROUP(CoreTest)
 
 TEST(CoreTest, SetupOfCoreSystem)
 {
-    CHECK(core.Setup(mainPID));
+    CHECK_EQUAL(false, core.Setup(mainPID));
+}
+
+
+TEST(CoreTest, VerifyThatPidIsNotFake)
+{
+    CHECK_EQUAL(false, core.Setup(-1));
 }
 
 
