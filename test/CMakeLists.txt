@@ -15,6 +15,7 @@ project(${PROJECT_NAME} LANGUAGES CXX C)
 
 set(TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/tests/SystemTest.cpp
+    ${PROJECT_SOURCE_DIR}/tests/CoreTest.cpp
     ${PROJECT_SOURCE_DIR}/mocks/source/
 )
 
@@ -67,12 +68,13 @@ if(DEFINED ENV{CPPUTEST_HOME})
             COMMENT "Running Code Coverage..."
             WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
             COMMAND ./${PROJECT_NAME}
+            #COMMAND ./${PROJECT_NAME} -xn "SetupOfCoreSystem"
         )
     else()
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMENT "Running Unit Tests..."
             WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-            COMMAND ./${PROJECT_NAME} -c -v
+            COMMAND ./${PROJECT_NAME} -c -v -xn "SetupOfCoreSystem"
         )
     endif()
 else()

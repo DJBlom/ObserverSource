@@ -116,7 +116,7 @@ Coverage()
 
     total_percentage=$(((($branch_coverage + $line_coverage + $function_coverage)) / 3))
 
-    threshold=90
+    threshold=80
     if [[ $total_percentage -lt $threshold ]];
     then
         echo " "

@@ -14,7 +14,7 @@ namespace Control {
     class System {
         public:
             System() = delete;
-            explicit System(pid_t pid): mainPID{pid} {}
+            explicit System(const pid_t& pid): mainPID{pid} {}
             System(const System&) = default;
             System(System&&) = default;
             System& operator= (const System&) = default;
@@ -27,7 +27,7 @@ namespace Control {
 
 
         private:
-            pid_t mainPID;
+            const pid_t mainPID;
             Core core;
             Asymmetric amp;
     };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: System Unit Tests
+ * Contents: Core Unit Tests
  * Author: Dawid Blom
  * Date: October 1, 2023
  *
@@ -10,7 +10,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "System.h"
+#include "Core.h"
+
 extern "C"
 {
 
@@ -20,13 +21,12 @@ extern "C"
 static const pid_t mainPID = getpid();
 
 /**********************************TEST LIST************************************
- * 1) Verify that the system is ready to begin operation
- * 2) Start the system up if it's ready
- * 3) Shutdown the system when on command
+ * 1) Setup the core system
+ * 2) Clean the core system up
  ******************************************************************************/
-TEST_GROUP(SystemTest)
+TEST_GROUP(CoreTest)
 {
-    Control::System system{mainPID};
+    Control::Core core;
     void setup()
     {
     }
@@ -37,26 +37,13 @@ TEST_GROUP(SystemTest)
 };
 
 
-TEST(SystemTest, VerifyTheSystemIsReadyForOperation)
+TEST(CoreTest, SetupOfCoreSystem)
 {
-    CHECK(system.IsReady());
+    CHECK(core.Setup(mainPID));
 }
 
 
-TEST(SystemTest, IfTheSystemIsReadyStartIt)
+TEST(CoreTest, CleanupOfCoreSystem)
 {
-    if (system.IsReady())
-        CHECK(system.Start());
+    CHECK(core.Cleanup());
 }
-
-
-TEST(SystemTest, ShutTheSystemDown)
-{
-    CHECK(system.Shutdown());
-}
-
-
-
-
-
-
