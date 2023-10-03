@@ -75,6 +75,13 @@ if(BUILD_PROJECT)
         message(STATUS "Directory source/system, does not exist")
     endif()
 
+    if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/source/api)
+        add_subdirectory(${CMAKE_SOURCE_DIR}/source/api)
+        target_link_libraries(${PROJECT_NAME} PRIVATE api)
+    else()
+        message(STATUS "Directory source/system, does not exist")
+    endif()
+
     if (EXISTS ${CMAKE_OBJDUMP})
         add_custom_command(
             TARGET ${PROJECT_NAME}

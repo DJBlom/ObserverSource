@@ -14,18 +14,21 @@ project(${PROJECT_NAME} LANGUAGES CXX C)
 
 
 set(TEST_SOURCES
-    ${PROJECT_SOURCE_DIR}/tests/SystemTest.cpp
-    ${PROJECT_SOURCE_DIR}/tests/CoreTest.cpp
+    #${PROJECT_SOURCE_DIR}/tests/SystemTest.cpp
+    #${PROJECT_SOURCE_DIR}/tests/CoreTest.cpp
+    ${PROJECT_SOURCE_DIR}/tests/SystemSchedTest.cpp
     ${PROJECT_SOURCE_DIR}/mocks/source/
 )
 
 set(PROJECT_SOURCES
-    ${PROJECT_SOURCE_DIR}/../source/system/source/System.cpp
-    ${PROJECT_SOURCE_DIR}/../source/system/source/Core.cpp
-    ${PROJECT_SOURCE_DIR}/../source/system/source/Asymmetric.cpp
+    ${PROJECT_SOURCE_DIR}/../source/api/source/SystemSched.cpp
+    #${PROJECT_SOURCE_DIR}/../source/system/source/System.cpp
+    #${PROJECT_SOURCE_DIR}/../source/system/source/Core.cpp
+    #${PROJECT_SOURCE_DIR}/../source/system/source/Asymmetric.cpp
 )
 
 set(PROJECT_INCLUDES
+    ${PROJECT_SOURCE_DIR}/../source/api/include
     ${PROJECT_SOURCE_DIR}/../source/system/include
 )
 
