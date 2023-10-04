@@ -40,12 +40,15 @@
 
 [[nodiscard]] bool Api::SystemSched::SetScheduler(const struct sched_param* param) noexcept
 {
-    this->isValid = true;
+    this->isValid = false;
     int result = sched_setscheduler(this->mainPID, this->policy, param);
-    if (result == -1)
+    if (result < 0)
     {
         perror("Set Scheduler");
-        this->isValid = false;
+    }
+    else
+    {
+        this->isValid = true;
     }
 
     return this->isValid;

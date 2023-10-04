@@ -67,13 +67,19 @@ if(DEFINED ENV{CPPUTEST_HOME})
     )
 
     if (CODE_COVERAGE)
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        add_custom_command(TARGET ${PROJECT_NAME}
+            PRE_BUILD
+            COMMAND sudo setcap cap_sys_nice+ep ${PROJECT_NAME}
+            POST_BUILD
             COMMENT "Running Code Coverage..."
             WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
             COMMAND ./${PROJECT_NAME}
         )
     else()
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        add_custom_command(TARGET ${PROJECT_NAME}
+            PRE_BUILD
+            COMMAND sudo setcap cap_sys_nice+ep ${PROJECT_NAME}
+            POST_BUILD
             COMMENT "Running Unit Tests..."
             WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
             COMMAND ./${PROJECT_NAME} -c -v -xn "SetupOfCoreSystem"

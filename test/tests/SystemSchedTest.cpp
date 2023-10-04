@@ -7,6 +7,7 @@
  ******************************************************************************/
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
+#include <sched.h>
 #include <unistd.h>
 
 #include "SystemSched.h"
@@ -76,7 +77,9 @@ TEST(SystemSchedTest, SetSchedulerOnNullValueParam)
 TEST(SystemSchedTest, SetSchedulerWithValueParam)
 {
     struct sched_param param;
-    param.sched_priority = 99;
+    pid_t pid = getpid();
+    CHECK(sched.ValidatePid(pid));
+    param.sched_priority = sched.GetPriority(SCHED_FIFO);
 
-    CHECK_EQUAL(false, sched.SetScheduler(&param));
+    CHECK_EQUAL(true, sched.SetScheduler(&param));
 }
