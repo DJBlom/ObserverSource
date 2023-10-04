@@ -12,13 +12,14 @@ namespace Api {
             SystemSched& operator= (SystemSched&&) = default;
             virtual ~SystemSched() = default;
 
-            [[nodiscard]] virtual bool PIDValidate(const pid_t& pid) noexcept override;
-            //[[nodiscard]] virtual bool PiorityValidate(const std::int32_t policy) noexcept override;
-            //[[nodiscard]] virtual bool SchedulerValidate(const struct sched_param* param) noexcept override;
+            [[nodiscard]] virtual bool ValidatePid(const pid_t& pid) noexcept override;
+            [[nodiscard]] virtual int GetPriority(const int policy) noexcept override;
+            [[nodiscard]] virtual bool SetScheduler(const struct sched_param* param) noexcept override;
 
         private:
-            bool isValid{false};
+            int policy{-1};
             pid_t mainPID{-1};
+            bool isValid{false};
     };
 }
 #endif

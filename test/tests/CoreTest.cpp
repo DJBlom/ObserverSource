@@ -7,50 +7,45 @@
  ******************************************************************************/
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
-#include <sys/types.h>
-#include <unistd.h>
 
-//#include "Core.h"
-
+#include "Core.h"
 extern "C"
 {
 
 }
 
 
-//static const pid_t mainPID = getpid();
-
 /**********************************TEST LIST************************************
  * 1) Setup the core system
  * 2) Clean the core system up
  * 3) The should not not continue if the PID is fake
  ******************************************************************************/
-//TEST_GROUP(CoreTest)
-//{
-//    Control::Core core;
-//    void setup()
-//    {
-//    }
-//
-//    void teardown()
-//    {
-//    }
-//};
+TEST_GROUP(CoreTest)
+{
+    Control::Core core;
+    void setup()
+    {
+    }
+
+    void teardown()
+    {
+    }
+};
 
 
-//TEST(CoreTest, SetupOfCoreSystem)
-//{
-//    CHECK_EQUAL(false, core.Setup(mainPID));
-//}
-//
-//
-//TEST(CoreTest, VerifyThatPidIsNotFake)
-//{
-//    CHECK_EQUAL(false, core.Setup(-1));
-//}
-//
-//
-//TEST(CoreTest, CleanupOfCoreSystem)
-//{
-//    CHECK(core.Cleanup());
-//}
+TEST(CoreTest, SetupOfCoreSystem)
+{
+    CHECK_EQUAL(true, core.Setup(5));
+}
+
+
+TEST(CoreTest, VerifyThatPidIsNotFake)
+{
+    CHECK_EQUAL(true, core.Setup(-1));
+}
+
+
+TEST(CoreTest, CleanupOfCoreSystem)
+{
+    CHECK(core.Cleanup());
+}

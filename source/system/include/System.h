@@ -21,9 +21,9 @@ namespace Control {
             System& operator= (System&&) = default;
             ~System() = default;
 
-            [[nodiscard]] bool IsReady();
-            [[nodiscard]] bool Start();
-            [[nodiscard]] bool Shutdown();
+            [[nodiscard]] bool IsReady() noexcept;
+            [[nodiscard]] bool Start() noexcept;
+            [[nodiscard]] bool Shutdown() noexcept;
 
 
         private:

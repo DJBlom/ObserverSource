@@ -7,12 +7,9 @@
  ******************************************************************************/
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
-#include <sys/types.h>
 #include <unistd.h>
-#include <iostream>
 
 #include "SystemSched.h"
-
 extern "C"
 {
 
@@ -22,15 +19,13 @@ static const pid_t mainPID = getpid();
 
 /**********************************TEST LIST************************************
  * Set the priority of the scheduler
- * 1) Verify that the priority p in range 1 <= p <= 99
- * 2) Verify priority p out of range 0 > p > 99
- * 2) Ensure that that the policy is SCHED_FIFO
+ * 1) Get the priority based on the SCHED_FIFO policy A.K.A 1 (Done)
+ * 2) Ensure that that the policy is SCHED_FIFO (Done)
  *
  * Set the scheduler to be a FIFO scheduler
- * 3) Verify that the PID is not negative
- * 4) Verify that the sched_param argument is not NULL
- * 5) Ensure that that the policy is SCHED_FIFO
- * 6) Test on failure because we need sudo priviledges to run successfully
+ * 3) The system should not run on negative PIDs (Done)
+ * 4) Set the scheduler and make sure that sched_param argument is not NULL
+ * 5) Test on failure because we need sudo priviledges to run successfully
  ******************************************************************************/
 TEST_GROUP(SystemSchedTest)
 {
@@ -45,19 +40,43 @@ TEST_GROUP(SystemSchedTest)
 };
 
 
-TEST(SystemSchedTest, VerifyThePriorityInRange)
+TEST(SystemSchedTest, VerifyPidForPositiveNumbers)
 {
-    CHECK_EQUAL(true, sched.PIDValidate(mainPID));
-    CHECK_EQUAL(true, sched.PIDValidate(0));
+    CHECK_EQUAL(true, sched.ValidatePid(mainPID));
+    CHECK_EQUAL(true, sched.ValidatePid(0));
 }
 
 
-TEST(SystemSchedTest, VerifyThePriorityOutOfRange)
+TEST(SystemSchedTest, VerifyPidForNegativeNumbers)
 {
-    CHECK_EQUAL(false, sched.PIDValidate(-1));
-    CHECK_EQUAL(false, sched.PIDValidate(-5));
+    CHECK_EQUAL(false, sched.ValidatePid(-1));
+    CHECK_EQUAL(false, sched.ValidatePid(-5));
 }
 
 
+TEST(SystemSchedTest, PriorityRangeInBound)
+{
+    CHECK_EQUAL(99, sched.GetPriority(1));
+}
 
 
+TEST(SystemSchedTest, PriorityRangeOutOfBound)
+{
+    CHECK_EQUAL(-1, sched.GetPriority(-1));
+}
+
+
+TEST(SystemSchedTest, SetSchedulerOnNullValueParam)
+{
+    struct sched_param* param{nullptr};
+    CHECK_EQUAL(false, sched.SetScheduler(param));
+}
+
+
+TEST(SystemSchedTest, SetSchedulerWithValueParam)
+{
+    struct sched_param param;
+    param.sched_priority = 99;
+
+    CHECK_EQUAL(false, sched.SetScheduler(&param));
+}

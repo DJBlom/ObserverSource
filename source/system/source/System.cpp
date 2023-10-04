@@ -8,19 +8,19 @@
 #include "System.h"
 
 
-[[nodiscard]] bool Control::System::IsReady()
+[[nodiscard]] bool Control::System::IsReady() noexcept
 {
     return true;
 }
 
 
-[[nodiscard]] bool Control::System::Start()
+[[nodiscard]] bool Control::System::Start() noexcept
 {
     return true;
 }
 
 
-[[nodiscard]] bool Control::System::Shutdown()
+[[nodiscard]] bool Control::System::Shutdown() noexcept
 {
     return true;
 }

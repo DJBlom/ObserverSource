@@ -5,11 +5,12 @@
 
 
 
-[[nodiscard]] bool Api::SystemSched::PIDValidate(const pid_t& pid) noexcept
+[[nodiscard]] bool Api::SystemSched::ValidatePid(const pid_t& pid) noexcept
 {
     this->isValid = true;
     if (pid < 0)
     {
+        perror("Validate PID");
         this->isValid = false;
     }
     else
@@ -21,13 +22,31 @@
 }
 
 
-//[[nodiscard]] bool Api::SystemSched::PiorityValidate(const std::int32_t policy)
-//{
-//    return true;
-//}
-//
-//
-//[[nodiscard]] bool Api::SystemSched::SchedulerValidate(const struct sched_param* param)
-//{
-//    return true;
-//}
+[[nodiscard]] int Api::SystemSched::GetPriority(const int newPolicy) noexcept
+{
+    int priority =  sched_get_priority_max(newPolicy);
+    if (priority == -1)
+    {
+        perror("Get Priority");
+    }
+    else
+    {
+        this->policy = newPolicy;
+    }
+
+    return priority;
+}
+
+
+[[nodiscard]] bool Api::SystemSched::SetScheduler(const struct sched_param* param) noexcept
+{
+    this->isValid = true;
+    int result = sched_setscheduler(this->mainPID, this->policy, param);
+    if (result == -1)
+    {
+        perror("Set Scheduler");
+        this->isValid = false;
+    }
+
+    return this->isValid;
+}

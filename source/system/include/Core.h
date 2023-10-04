@@ -25,8 +25,8 @@ namespace Control {
             Core& operator= (Core&&) = default;
             virtual ~Core() = default;
 
-            [[nodiscard]] virtual bool Setup(const pid_t& mainPID);
-            [[nodiscard]] virtual bool Cleanup();
+            [[nodiscard]] virtual bool Setup(const pid_t& mainPID) noexcept;
+            [[nodiscard]] virtual bool Cleanup() noexcept;
 
             //[[nodiscard]] virtual bool SemTakeService1();
             //[[nodiscard]] virtual bool SemTakeService2();
@@ -38,8 +38,8 @@ namespace Control {
             //[[nodiscard]] virtual bool SemGiveService3();
             //[[nodiscard]] virtual bool SemGiveService4();
         protected:
-            [[nodiscard]] bool PrioritySetup();
-            [[nodiscard]] bool SchedulerSetup(const pid_t& mainPID);
+            [[nodiscard]] bool PrioritySetup() noexcept;
+            [[nodiscard]] bool SchedulerSetup(const pid_t& mainPID) noexcept;
 
         private:
             bool isReady{false};
