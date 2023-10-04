@@ -82,7 +82,7 @@ if(DEFINED ENV{CPPUTEST_HOME})
             POST_BUILD
             COMMENT "Running Unit Tests..."
             WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-            COMMAND ./${PROJECT_NAME} -c -v -xn "SetupOfCoreSystem"
+            COMMAND ./${PROJECT_NAME} -c -v
         )
     endif()
 else()
