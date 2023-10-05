@@ -23,7 +23,8 @@ env:
 
 jobs:
   Build:
-      runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
+      #runs-on: ubuntu-latest
     container:
       image: dawidblom/observer:latest
         #options: --privileged
@@ -39,7 +40,8 @@ jobs:
       run: scripts/Project.sh -l
 
   Tests:
-      runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
+    #runs-on: ubuntu-latest
     container:
       image: dawidblom/observer:latest
         #options: --privileged
