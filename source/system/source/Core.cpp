@@ -8,83 +8,62 @@
 #include "Core.h"
 
 
-[[nodiscard]] bool Control::Core::Setup(const pid_t& mainPID) noexcept
+[[nodiscard]] bool Control::Core::Setup(const int& policy) noexcept
 {
-    this->isReady = true;
-
-    if (mainPID < 0)
+    bool isReady{true};
+    int priority = GetPriority(policy);
+    if (SetScheduler(priority) == false)
     {
-        this->isReady = false;
+        isReady = false;
     }
-    this->isReady = PrioritySetup();
-//    else if (PrioritySetup() == false)
-//    {
-//        this->isReady = false;
-//    }
-    this->isReady = SchedulerSetup(mainPID);
-//    else if (SchedulerSetup(mainPID) == false)
-//    {
-//        this->isReady = false;
-//    }
-//    else
-//    {
-        for (int i = 0; i < Services::COUNT; i++)
-        {
-            sem_init(&this->serviceSem[i], 0, 0);
-//            if (sem_init(&this->serviceSem[i], 0, 0) < 0)
-//            {
-//                this->isReady = false;
-//                break;
-//            }
-        }
-//    }
 
-    return this->isReady;
+    return isReady;
 }
 
 
-[[nodiscard]] bool Control::Core::Cleanup() noexcept
+[[nodiscard]] int Control::Core::GetPriority(const int& policy) noexcept
 {
-    this->isReady = true;
-    for (int i = 0; i < Services::COUNT; i++)
-	{
-		sem_destroy(&this->serviceSem[i]);
-//		if (sem_destroy(&this->serviceSem[i]) < 0)
-//        {
-//            this->isReady = false;
-//        }
-	}
+    int priority{0};
+    if (PolicyIsValid(policy) == false)
+    {
+        priority = -1;
+    }
+    else
+    {
+        priority = sched_get_priority_max(policy);
+    }
 
-    return this->isReady;
+    return priority;
 }
 
 
-[[nodiscard]] bool Control::Core::PrioritySetup() noexcept
+[[nodiscard]] bool Control::Core::SetScheduler(const int& priority) noexcept
 {
-    this->isReady = true;
-    std::int32_t result = sched_get_priority_max(Info::policy);
-//    if (result < 0)
-//    {
-//        this->isReady = false;
-//    }
-//    else
-//    {
-        this->sched.sched_priority = result;
-//    }
+    bool isReady{true};
+    struct sched_param schedPriority;
+    schedPriority.sched_priority = priority;
+    if (sched_setscheduler(this->mainPID, this->schedPolicy, &schedPriority) == -1)
+    {
+        isReady = false;
+    }
 
-    return this->isReady;
+    return isReady;
 }
 
 
-[[nodiscard]] bool Control::Core::SchedulerSetup(const pid_t& mainPID) noexcept
+[[nodiscard]] bool Control::Core::PolicyIsValid(const int& policy) noexcept
 {
-    this->isReady = true;
-    std::int32_t result = sched_setscheduler(mainPID, Info::policy, &this->sched);
-    result++;
-//    if (result < 0)
-//    {
-//        this->isReady = false;
-//    }
+    bool isReady{true};
+    if (policy < 0 || (policy > 2))
+    {
+        isReady = false;
+        perror("POLICY");
+    }
+    else
+    {
+        this->schedPolicy = policy;
+        isReady = true;
+    }
 
-    return this->isReady;
+    return isReady;
 }
