@@ -25,6 +25,7 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     container: dawidblom/observer:latest
+      options: --privileged
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
@@ -38,6 +39,7 @@ jobs:
   Tests:
     runs-on: ubuntu-latest
     container: dawidblom/observer:latest
+      options: --privileged
     needs: Build
     steps:
     - name: Checkout Code
