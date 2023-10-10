@@ -40,7 +40,6 @@ TEST_GROUP(BinarySemaphoresTest)
         // the semaphore used by SemWait or SemPost
         if (sem.InitializeSemaphores(semaphores))
         {
-
         }
     }
 
@@ -49,10 +48,9 @@ TEST_GROUP(BinarySemaphoresTest)
         // SemWait and SemPost needs this,
         // even though this does not destroy
         // the semaphore used by SemWait or SemPost
-        if (sem.DestroySemaphores(semaphores))
-        {
-
-        }
+//        if (sem.DestroySemaphores(semaphores))
+//        {
+//        }
     }
 };
 
@@ -71,15 +69,16 @@ TEST(BinarySemaphoresTest, DestroyBinarySemaphores)
 
 TEST(BinarySemaphoresTest, BoundaryCheckBinarySemaphores)
 {
-    sem_t* semaphore{nullptr};
-    CHECK_EQUAL(false, sem.InitializeSemaphores(semaphore));
-    CHECK_EQUAL(false, sem.DestroySemaphores(semaphore));
+    sem_t* semaphoreFail{nullptr};
+    CHECK_EQUAL(false, sem.InitializeSemaphores(semaphoreFail));
+    CHECK_EQUAL(false, sem.DestroySemaphores(semaphoreFail));
 }
 
 
 TEST(BinarySemaphoresTest, TakeASemaphoreToLockAProcessThenGiveItBack)
 {
     sem_t semaphore;
+    CHECK_EQUAL(true, sem.SemPost(&semaphore));
     CHECK_EQUAL(true, sem.SemWait(&semaphore));
     CHECK_EQUAL(true, sem.SemPost(&semaphore));
 }
