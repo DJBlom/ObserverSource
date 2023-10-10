@@ -13,7 +13,7 @@ file(GLOB RESULT ${PROJECT_SOURCE_DIR}/source)
 list(LENGTH RESULT FILES_IN_DIR)
 if(${FILES_IN_DIR} GREATER 0)
     add_library(api OBJECT
-        ${PROJECT_SOURCE_DIR}/source/SystemSched.cpp
+        ${PROJECT_SOURCE_DIR}/source/RealTimeSched.cpp
     )
 
     target_include_directories(api PRIVATE

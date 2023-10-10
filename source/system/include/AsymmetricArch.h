@@ -7,7 +7,7 @@
  ******************************************************************************/
 #ifndef _ASYMMETRIC_H_
 #define _ASYMMETRIC_H_
-namespace Control {
+namespace System {
     class Asymmetric {
         public:
             Asymmetric() = default;

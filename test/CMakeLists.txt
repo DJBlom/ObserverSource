@@ -14,17 +14,17 @@ project(${PROJECT_NAME} LANGUAGES CXX C)
 
 
 set(TEST_SOURCES
-    ${PROJECT_SOURCE_DIR}/tests/SystemTest.cpp
+    ${PROJECT_SOURCE_DIR}/tests/ControlTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/CoreTest.cpp
-    ${PROJECT_SOURCE_DIR}/tests/SystemSchedTest.cpp
+    ${PROJECT_SOURCE_DIR}/tests/RealTimeSchedTest.cpp
     ${PROJECT_SOURCE_DIR}/mocks/source/
 )
 
 set(PROJECT_SOURCES
-    ${PROJECT_SOURCE_DIR}/../source/api/source/SystemSched.cpp
-    ${PROJECT_SOURCE_DIR}/../source/system/source/System.cpp
+    ${PROJECT_SOURCE_DIR}/../source/api/source/RealTimeSched.cpp
+    ${PROJECT_SOURCE_DIR}/../source/system/source/Control.cpp
     ${PROJECT_SOURCE_DIR}/../source/system/source/Core.cpp
-    ${PROJECT_SOURCE_DIR}/../source/system/source/Asymmetric.cpp
+    ${PROJECT_SOURCE_DIR}/../source/system/source/AsymmetricArch.cpp
 )
 
 set(PROJECT_INCLUDES
@@ -32,11 +32,19 @@ set(PROJECT_INCLUDES
     ${PROJECT_SOURCE_DIR}/../source/system/include
 )
 
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 if(DEFINED ENV{CPPUTEST_HOME})
     add_compile_options(
         -Wall
         -Werror
         -Wextra
+        -Wconversion
         --coverage
         -fprofile-arcs
         -ftest-coverage

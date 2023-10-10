@@ -8,7 +8,7 @@
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
-#include "System.h"
+#include "Control.h"
 extern "C"
 {
 
@@ -21,9 +21,9 @@ extern "C"
  * 2) Start the system up if it's ready
  * 3) Shutdown the system when on command
  ******************************************************************************/
-TEST_GROUP(SystemTest)
+TEST_GROUP(ControlTest)
 {
-    Control::System system{6};
+    System::Control control{6};
     void setup()
     {
     }
@@ -34,22 +34,29 @@ TEST_GROUP(SystemTest)
 };
 
 
-TEST(SystemTest, VerifyTheSystemIsReadyForOperation)
+TEST(ControlTest, VerifyTheSystemIsReadyForOperation)
 {
-    CHECK(system.IsReady());
+    CHECK_EQUAL(true, control.IsReady());
 }
 
 
-TEST(SystemTest, IfTheSystemIsReadyStartIt)
+TEST(ControlTest, VerifyTheSystemIsNotReadyForOperation)
 {
-    if (system.IsReady())
-        CHECK(system.Start());
+    System::Control failControl{-1};
+    CHECK_EQUAL(false, failControl.IsReady());
 }
 
 
-TEST(SystemTest, ShutTheSystemDown)
+TEST(ControlTest, IfTheSystemIsReadyStartIt)
 {
-    CHECK(system.Shutdown());
+    CHECK_EQUAL(true, control.IsReady());
+    CHECK_EQUAL(true, control.Start());
+}
+
+
+TEST(ControlTest, ShutTheSystemDown)
+{
+    CHECK_EQUAL(true, control.Shutdown());
 }
 
 

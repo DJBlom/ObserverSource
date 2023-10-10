@@ -38,6 +38,7 @@ if(BUILD_PROJECT)
         -Wall
         -Werror
         -Wextra
+        -Wconversion
         $<$<CONFIG:DEBUG>:-g3>
         $<$<CONFIG:DEBUG>:-Og>
     )
@@ -52,6 +53,7 @@ if(BUILD_PROJECT)
     )
 
     target_include_directories(${PROJECT_NAME} PRIVATE
+        ${CMAKE_SOURCE_DIR}/source/api/include/
         ${CMAKE_SOURCE_DIR}/source/system/include/
         ${CMAKE_SOURCE_DIR}/source/features/include/
     )
@@ -60,6 +62,13 @@ if(BUILD_PROJECT)
         LINKER:-lpthread
         LINKER:-lrt
     )
+
+    if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/source/api)
+        add_subdirectory(${CMAKE_SOURCE_DIR}/source/api)
+        target_link_libraries(${PROJECT_NAME} PRIVATE api)
+    else()
+        message(STATUS "Directory source/system, does not exist")
+    endif()
 
     if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/source/features)
         add_subdirectory(${CMAKE_SOURCE_DIR}/source/features)
@@ -71,13 +80,6 @@ if(BUILD_PROJECT)
     if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/source/system)
         add_subdirectory(${CMAKE_SOURCE_DIR}/source/system)
         target_link_libraries(${PROJECT_NAME} PRIVATE system)
-    else()
-        message(STATUS "Directory source/system, does not exist")
-    endif()
-
-    if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/source/api)
-        add_subdirectory(${CMAKE_SOURCE_DIR}/source/api)
-        target_link_libraries(${PROJECT_NAME} PRIVATE api)
     else()
         message(STATUS "Directory source/system, does not exist")
     endif()

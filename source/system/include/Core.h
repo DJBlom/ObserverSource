@@ -7,33 +7,28 @@
  ******************************************************************************/
 #ifndef _CORE_H_
 #define _CORE_H_
-#include <stdio.h>
-#include <sched.h>
-#include <unistd.h>
-#include <semaphore.h>
-#include <sys/types.h>
-namespace Control {
+#include "Sched.h"
+namespace System {
+    constexpr int servicesCount{4};
     class Core {
         public:
             Core() = default;
-            explicit Core(const pid_t& pid) : mainPID{pid} {}
+            explicit Core(const int& policy) : schedPolicy{policy} {}
             Core(const Core&) = default;
             Core(Core&&) = default;
             Core& operator= (const Core&) = default;
             Core& operator= (Core&&) = default;
             virtual ~Core() = default;
 
-            [[nodiscard]] virtual bool Setup(const int& policy) noexcept;
+            [[nodiscard]] virtual bool Setup(Interface::Sched& sched) noexcept;
 
         private:
-            [[nodiscard]] int GetPriority(const int& policy) noexcept;
-            [[nodiscard]] bool SetScheduler(const int& priority) noexcept;
-            [[nodiscard]] bool PolicyIsValid(const int& policy) noexcept;
+            int schedPolicy{Default::initialize};
+            sem_t semaphores[servicesCount]{Default::initialize};
 
-        private:
-            int schedPolicy{0};
-            pid_t mainPID{0};
-
+            enum Default {
+                initialize = 0
+            };
     };
 }
 #endif

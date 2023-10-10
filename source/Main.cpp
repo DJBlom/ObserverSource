@@ -3,14 +3,19 @@
  * Author: Dawid Blom
  * Date: April 13, 2023
  *
- * Note: 
+ * Note:
  *******************************************************************************/
-#include <iostream>
+#include <unistd.h>
+#include "Control.h"
 
 
 int main(void)
 {
-    std::cout << "Hello, World.\n";
+    pid_t pid = getpid();
+    System::Control controlBoard{pid};
+    if (controlBoard.IsReady() == true)
+    {
+    }
 
     return 0;
 }

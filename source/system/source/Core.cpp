@@ -8,61 +8,13 @@
 #include "Core.h"
 
 
-[[nodiscard]] bool Control::Core::Setup(const int& policy) noexcept
+[[nodiscard]] bool System::Core::Setup(Interface::Sched& sched) noexcept
 {
-    bool isReady{true};
-    int priority = GetPriority(policy);
-    if (SetScheduler(priority) == false)
+    bool isReady{false};
+    int priority = sched.PriorityGet(this->schedPolicy);
+    if (sched.SchedulerSet(priority) == true)
     {
-        isReady = false;
-    }
-
-    return isReady;
-}
-
-
-[[nodiscard]] int Control::Core::GetPriority(const int& policy) noexcept
-{
-    int priority{0};
-    if (PolicyIsValid(policy) == false)
-    {
-        priority = -1;
-    }
-    else
-    {
-        priority = sched_get_priority_max(policy);
-    }
-
-    return priority;
-}
-
-
-[[nodiscard]] bool Control::Core::SetScheduler(const int& priority) noexcept
-{
-    bool isReady{true};
-    struct sched_param schedPriority;
-    schedPriority.sched_priority = priority;
-    if (sched_setscheduler(this->mainPID, this->schedPolicy, &schedPriority) == -1)
-    {
-        isReady = false;
-    }
-
-    return isReady;
-}
-
-
-[[nodiscard]] bool Control::Core::PolicyIsValid(const int& policy) noexcept
-{
-    bool isReady{true};
-    if (policy < 0 || (policy > 2))
-    {
-        isReady = false;
-        perror("POLICY");
-    }
-    else
-    {
-        this->schedPolicy = policy;
-        isReady = true;
+        isReady = sched.InitializeSemaphores(this->semaphores, servicesCount);
     }
 
     return isReady;
