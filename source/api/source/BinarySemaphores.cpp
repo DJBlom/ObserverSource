@@ -71,7 +71,7 @@
     }
     else
     {
-        sem_wait(semaphore);
+        sem_post(semaphore);
     }
 
     return isPosted;

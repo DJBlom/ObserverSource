@@ -34,23 +34,10 @@ TEST_GROUP(BinarySemaphoresTest)
     void setup()
     {
         sem = Api::BinarySemaphores{4};
-
-        // SemWait and SemPost needs this,
-        // even though this does not destroy
-        // the semaphore used by SemWait or SemPost
-        if (sem.InitializeSemaphores(semaphores))
-        {
-        }
     }
 
     void teardown()
     {
-        // SemWait and SemPost needs this,
-        // even though this does not destroy
-        // the semaphore used by SemWait or SemPost
-//        if (sem.DestroySemaphores(semaphores))
-//        {
-//        }
     }
 };
 
@@ -69,18 +56,18 @@ TEST(BinarySemaphoresTest, DestroyBinarySemaphores)
 
 TEST(BinarySemaphoresTest, BoundaryCheckBinarySemaphores)
 {
-    sem_t* semaphoreFail{nullptr};
-    CHECK_EQUAL(false, sem.InitializeSemaphores(semaphoreFail));
-    CHECK_EQUAL(false, sem.DestroySemaphores(semaphoreFail));
+    sem_t* semaphore{nullptr};
+    CHECK_EQUAL(false, sem.InitializeSemaphores(semaphore));
+    CHECK_EQUAL(false, sem.DestroySemaphores(semaphore));
 }
 
 
 TEST(BinarySemaphoresTest, TakeASemaphoreToLockAProcessThenGiveItBack)
 {
-    sem_t semaphore;
-    CHECK_EQUAL(true, sem.SemPost(&semaphore));
-    CHECK_EQUAL(true, sem.SemWait(&semaphore));
-    CHECK_EQUAL(true, sem.SemPost(&semaphore));
+    CHECK_EQUAL(true, sem.InitializeSemaphores(semaphores));
+    CHECK_EQUAL(true, sem.SemWait(&semaphores[0]));
+    CHECK_EQUAL(true, sem.SemPost(&semaphores[0]));
+    CHECK_EQUAL(true, sem.DestroySemaphores(semaphores));
 }
 
 
