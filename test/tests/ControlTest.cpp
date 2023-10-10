@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: System Unit Tests
+ * Contents: Control Unit Tests
  * Author: Dawid Blom
  * Date: October 1, 2023
  *
@@ -19,9 +19,9 @@ extern "C"
 
 
 /**********************************TEST LIST************************************
- * 1) Verify that the system is ready to begin operation
- * 2) Start the system up if it's ready
- * 3) Shutdown the system when on command
+ * 1) Verify that the system is ready to begin operation (Done)
+ * 2) Start the system up if it's ready (Done)
+ * 3) Shutdown the system when on command (Done)
  ******************************************************************************/
 TEST_GROUP(ControlTest)
 {
@@ -61,9 +61,3 @@ TEST(ControlTest, ShutTheSystemDown)
 {
     CHECK_EQUAL(true, control.Shutdown());
 }
-
-
-
-
-
-

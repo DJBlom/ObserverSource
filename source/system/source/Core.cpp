@@ -8,14 +8,38 @@
 #include "Core.h"
 
 
-[[nodiscard]] bool System::Core::Setup(Interface::Sched& sched) noexcept
+[[nodiscard]] bool System::Core::SchedulerSetup(Interface::Sched& sched) noexcept
 {
-    bool isReady{false};
+    bool isSetup{false};
     int priority = sched.PriorityGet(this->schedPolicy);
     if (sched.SchedulerSet(priority) == true)
     {
-        isReady = sched.InitializeSemaphores(this->semaphores, servicesCount);
+        isSetup = true;
     }
 
-    return isReady;
+    return isSetup;
+}
+
+
+[[nodiscard]] bool System::Core::SemaphoreSetup(Interface::Semaphore& sem) noexcept
+{
+    bool isSetup{false};
+    if (sem.InitializeSemaphores(this->semaphores) == true)
+    {
+        isSetup = true;
+    }
+
+    return isSetup;
+}
+
+
+[[nodiscard]] bool System::Core::Cleanup(Interface::Semaphore& sem) noexcept
+{
+    bool isCleaned{false};
+    if (sem.DestroySemaphores(this->semaphores) == true)
+    {
+        isCleaned = true;
+    }
+
+    return isCleaned;
 }

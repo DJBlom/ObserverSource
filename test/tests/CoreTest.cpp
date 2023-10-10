@@ -11,6 +11,7 @@
 
 #include "Core.h"
 #include "RealTimeSched.h"
+#include "BinarySemaphores.h"
 extern "C"
 {
 
@@ -20,6 +21,7 @@ extern "C"
 /**********************************TEST LIST************************************
  * 1) Setup the core system with correct pid (Done)
  * 2) Setup the core system with incorrect pid (Done)
+ * 3) Setup the core semaphores
  ******************************************************************************/
 TEST_GROUP(CoreTest)
 {
@@ -29,7 +31,6 @@ TEST_GROUP(CoreTest)
     {
         int pid = getpid();
         sched = Api::RealTimeSched{pid};
-
     }
 
     void teardown()
@@ -41,11 +42,35 @@ TEST_GROUP(CoreTest)
 TEST(CoreTest, SystemSetupWithFifoScheduler)
 {
     core = System::Core{SCHED_FIFO};
-    CHECK_EQUAL(true, core.Setup(sched));
+    CHECK_EQUAL(true, core.SchedulerSetup(sched));
 }
+
 
 TEST(CoreTest, SystemSetupWithWrongScheduler)
 {
     core = System::Core{-1};
-    CHECK_EQUAL(false, core.Setup(sched));
+    CHECK_EQUAL(false, core.SchedulerSetup(sched));
+}
+
+
+TEST(CoreTest, SettingUpTheCoreSeamphores)
+{
+    Api::BinarySemaphores sem{4};
+    CHECK_EQUAL(true, core.SemaphoreSetup(sem));
+}
+
+
+TEST(CoreTest, CleanupCoreSystem)
+{
+    Api::BinarySemaphores sem{4};
+    CHECK_EQUAL(true, core.SemaphoreSetup(sem));
+    CHECK_EQUAL(true, core.Cleanup(sem));
+}
+
+
+TEST(CoreTest, BoundaryCheckForSettingUpCoreSeamphores)
+{
+    Api::BinarySemaphores sem{-1};
+    CHECK_EQUAL(false, core.SemaphoreSetup(sem));
+    CHECK_EQUAL(false, core.Cleanup(sem));
 }

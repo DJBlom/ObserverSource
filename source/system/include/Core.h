@@ -8,6 +8,7 @@
 #ifndef _CORE_H_
 #define _CORE_H_
 #include "Sched.h"
+#include "Semaphore.h"
 namespace System {
     constexpr int servicesCount{4};
     class Core {
@@ -20,7 +21,9 @@ namespace System {
             Core& operator= (Core&&) = default;
             virtual ~Core() = default;
 
-            [[nodiscard]] virtual bool Setup(Interface::Sched& sched) noexcept;
+            [[nodiscard]] virtual bool SchedulerSetup(Interface::Sched& sched) noexcept;
+            [[nodiscard]] virtual bool SemaphoreSetup(Interface::Semaphore& sem) noexcept;
+            [[nodiscard]] virtual bool Cleanup(Interface::Semaphore& sem) noexcept;
 
         private:
             int schedPolicy{Default::initialize};
