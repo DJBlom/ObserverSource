@@ -8,6 +8,8 @@
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
+#include <unistd.h>
+
 #include "Control.h"
 extern "C"
 {
@@ -23,7 +25,8 @@ extern "C"
  ******************************************************************************/
 TEST_GROUP(ControlTest)
 {
-    System::Control control{6};
+    pid_t pid = getpid();
+    System::Control control{pid};
     void setup()
     {
     }
