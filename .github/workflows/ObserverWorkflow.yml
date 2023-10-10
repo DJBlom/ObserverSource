@@ -74,7 +74,7 @@ jobs:
       image: dawidblom/observer:latest
       options: --privileged
 
-    needs: Build
+    needs: [Analysis, Tests]
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
