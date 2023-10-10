@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: Core Unit Tests
+ * Contents: RealTimeSched Unit Tests
  * Author: Dawid Blom
  * Date: October 1, 2023
  *
@@ -29,7 +29,7 @@ extern "C"
  * 7) A valid policy is 1 (Done)
  * 8) The number of semaphores = number of services (Done)
  ******************************************************************************/
-TEST_GROUP(SchedFifoTest)
+TEST_GROUP(RealTimeSchedTest)
 {
     Api::RealTimeSched sched;
     void setup()
@@ -44,34 +44,34 @@ TEST_GROUP(SchedFifoTest)
 };
 
 
-TEST(SchedFifoTest, GetSystemsPriority)
+TEST(RealTimeSchedTest, GetSystemsPriority)
 {
     CHECK_EQUAL(99, sched.PriorityGet(SCHED_FIFO));
 }
 
 
-TEST(SchedFifoTest, PriorityIsInBounds)
+TEST(RealTimeSchedTest, PriorityIsInBounds)
 {
     CHECK_EQUAL(-1, sched.PriorityGet(SCHED_RR));
     CHECK_EQUAL(-1, sched.PriorityGet(SCHED_OTHER));
 }
 
 
-TEST(SchedFifoTest, CorrectlySetTheSystemsScheduler)
+TEST(RealTimeSchedTest, CorrectlySetTheSystemsScheduler)
 {
     int priority = sched.PriorityGet(SCHED_FIFO);
     CHECK_EQUAL(true, sched.SchedulerSet(priority));
 }
 
 
-TEST(SchedFifoTest, IncorrectlySetTheSystemsScheduler)
+TEST(RealTimeSchedTest, IncorrectlySetTheSystemsScheduler)
 {
     int priority = sched.PriorityGet(SCHED_RR);
     CHECK_EQUAL(false, sched.SchedulerSet(priority));
 }
 
 
-TEST(SchedFifoTest, InitializeSemaphores)
+TEST(RealTimeSchedTest, InitializeSemaphores)
 {
     const int size{4};
     sem_t semaphores[size]{0};
@@ -79,7 +79,7 @@ TEST(SchedFifoTest, InitializeSemaphores)
 }
 
 
-TEST(SchedFifoTest, DestroySemaphores)
+TEST(RealTimeSchedTest, DestroySemaphores)
 {
     const int size{4};
     sem_t semaphores[size]{0};
