@@ -16,7 +16,7 @@ System::Control::Control(const pid_t& pid)
 [[nodiscard]] bool System::Control::IsReady() noexcept
 {
     bool isReady{false};
-    if (core.Setup(this->sched) == true)
+    if (this->core.Setup(this->sched) == true)
     {
         isReady = true;
     }
