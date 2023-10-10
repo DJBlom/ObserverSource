@@ -38,7 +38,7 @@ jobs:
     - name: Project Statistics
       run: scripts/Project.sh -l
 
-  StaticCodeAnalysis:
+  Static Code Analysis:
     runs-on: ubuntu-latest
     container:
       image: dawidblom/observer:latest
@@ -52,7 +52,7 @@ jobs:
     - name: Project Analysis
       run: scripts/Project.sh -a
 
-  UnitTests:
+  Unit Tests:
     runs-on: ubuntu-latest
     container:
       image: dawidblom/observer:latest
@@ -68,7 +68,7 @@ jobs:
       env:
         CPPUTEST_HOME: ${{ vars.CPPUTEST_HOME  }}
 
-  CodeCoverage:
+  Code Coverage:
     runs-on: ubuntu-latest
     container:
       image: dawidblom/observer:latest
@@ -85,7 +85,10 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     container: dawidblom/observer:latest
-    needs: Tests
+    needs: Build
+    needs: Static Code Analysis
+    needs: Unit Tests
+    needs: Code Coverage
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
