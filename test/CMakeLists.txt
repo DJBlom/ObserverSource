@@ -70,15 +70,12 @@ if(DEFINED ENV{CPPUTEST_HOME})
         ${PROJECT_SOURCES}
     )
 
-    target_link_options(${PROJECT_NAME} PRIVATE
-        LINKER:-lpthread
-        LINKER:-lrt
-    )
-
     target_link_libraries(${PROJECT_NAME}
         gcov
         CppUTest
         CppUTestExt
+        pthread
+        rt
     )
 
     if (CODE_COVERAGE)
