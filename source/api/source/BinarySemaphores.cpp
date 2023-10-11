@@ -8,38 +8,22 @@
 #include "BinarySemaphores.h"
 
 
-[[nodiscard]] bool Api::BinarySemaphores::InitializeSemaphores(sem_t* semaphores) noexcept
+[[nodiscard]] bool Api::BinarySemaphores::InitializeSemaphores(sem_t* semaphore) noexcept
 {
-    bool isReady{true};
-    if (OutOfBounds(semaphores))
-    {
-        isReady = false;
-    }
-    else
-    {
-        for (int i = 0; i < this->count; i++)
-        {
-            sem_init(&semaphores[i], Default::PSHARED, Default::VALUE);
-        }
-    }
-
-    return isReady;
+    return ~(sem_init(semaphore, Default::PSHARED, Default::VALUE));
 }
 
 
-[[nodiscard]] bool Api::BinarySemaphores::DestroySemaphores(sem_t* semaphores) noexcept
+[[nodiscard]] bool Api::BinarySemaphores::DestroySemaphores(sem_t* semaphore) noexcept
 {
     bool isDestroyed{true};
-    if (OutOfBounds(semaphores) == true)
+    if (IsNullptr(semaphore) == true)
     {
         isDestroyed = false;
     }
     else
     {
-        for (int i = 0; i < this->count; i++)
-        {
-            sem_destroy(&semaphores[i]);
-        }
+        sem_destroy(semaphore);
     }
 
     return isDestroyed;
@@ -49,7 +33,7 @@
 [[nodiscard]] bool Api::BinarySemaphores::SemWait(sem_t* semaphore) noexcept
 {
     bool isWaiting{true};
-    if (OutOfBounds(semaphore) == true)
+    if (IsNullptr(semaphore) == true)
     {
         isWaiting = false;
     }
@@ -65,7 +49,7 @@
 [[nodiscard]] bool Api::BinarySemaphores::SemPost(sem_t* semaphore) noexcept
 {
     bool isPosted{true};
-    if (OutOfBounds(semaphore) == true)
+    if (IsNullptr(semaphore) == true)
     {
         isPosted = false;
     }
@@ -78,7 +62,7 @@
 }
 
 
-[[nodiscard]] bool Api::BinarySemaphores::OutOfBounds(sem_t* semaphores) noexcept
+[[nodiscard]] bool Api::BinarySemaphores::IsNullptr(sem_t* semaphore) noexcept
 {
-    return ((semaphores == nullptr) || (this->count < Bounds::COUNT_LOWER));
+    return (semaphore == nullptr);
 }

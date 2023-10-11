@@ -19,14 +19,13 @@ extern "C"
 static sem_t semaphore{0};
 
 /**********************************TEST LIST************************************
- * 1) Create system semaphores with a dedicated service count (Done)
- * 2) Initialize binary semaphores (Done)
- * 3) Destroy the binary semaphores created (Done)
- * 4) Semaphores should not be created or destroyed if it's nullptr or
- *    services count is less than 1 (Done)
- * 5) We should be able to wait on a semaphore (Done)
- * 6) We should be able to post a semaphore (Done)
- *****************************************************************************/
+ * 1) Initialize binary semaphore (Done)
+ * 2) Destroy the binary semaphore created (Done)
+ * 3) Semaphores should not be destroyed if they are nullptr (Done)
+ * 4) We should be able to wait on a semaphore (Done)
+ * 5) We should be able to post a semaphore (Done)
+ * 6) We should not be able to wait or post on an uninitialized semaphore (Done)
+ ******************************************************************************/
 TEST_GROUP(BinarySemaphoresTest)
 {
     Api::BinarySemaphores sem;
@@ -46,25 +45,16 @@ TEST(BinarySemaphoresTest, InitializeBinarySemaphore)
 }
 
 
-TEST(BinarySemaphoresTest, DestroyBinarySemaphores)
+TEST(BinarySemaphoresTest, DestroyInitializedBinarySemaphore)
 {
     CHECK_EQUAL(true, sem.DestroySemaphores(&semaphore));
 }
 
 
-TEST(BinarySemaphoresTest, NullptrBoundaryCheckBinarySemaphore)
+TEST(BinarySemaphoresTest, DestroyUnintializedBinarySemaphore)
 {
     sem_t* semaphoreNullptr{nullptr};
-    CHECK_EQUAL(false, sem.InitializeSemaphores(semaphoreNullptr));
     CHECK_EQUAL(false, sem.DestroySemaphores(semaphoreNullptr));
-}
-
-
-TEST(BinarySemaphoresTest, CountBoundaryCheckBinarySemaphore)
-{
-    Api::BinarySemaphores failSem{-1};
-    CHECK_EQUAL(false, failSem.InitializeSemaphores(&semaphore));
-    CHECK_EQUAL(false, failSem.DestroySemaphores(&semaphore));
 }
 
 
