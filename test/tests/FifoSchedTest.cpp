@@ -9,7 +9,7 @@
 #include "CppUTestExt/MockSupport.h"
 #include <unistd.h>
 
-#include "RealTimeSched.h"
+#include "FifoSched.h"
 extern "C"
 {
 
@@ -44,7 +44,7 @@ TEST_GROUP(RealTimeSchedTest)
 };
 
 
-TEST(RealTimeSchedTest, GetSystemsPriority)
+TEST(RealTimeSchedTest, GetTheSystemPriorityBasedOnSCHED_FIFO)
 {
     CHECK_EQUAL(99, sched.PriorityGet(SCHED_FIFO));
 }
@@ -57,14 +57,14 @@ TEST(RealTimeSchedTest, PriorityIsInBounds)
 }
 
 
-TEST(RealTimeSchedTest, CorrectlySetTheSystemsScheduler)
+TEST(RealTimeSchedTest, CorrectlySetTheSystemScheduler)
 {
     int priority = sched.PriorityGet(SCHED_FIFO);
     CHECK_EQUAL(true, sched.SchedulerSet(priority));
 }
 
 
-TEST(RealTimeSchedTest, IncorrectlySetTheSystemsScheduler)
+TEST(RealTimeSchedTest, IncorrectlySetTheSystemScheduler)
 {
     int priority = sched.PriorityGet(SCHED_RR);
     CHECK_EQUAL(false, sched.SchedulerSet(priority));

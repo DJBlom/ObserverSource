@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 #include "Core.h"
-#include "RealTimeSched.h"
+#include "FifoSched.h"
 #include "BinarySemaphores.h"
 extern "C"
 {

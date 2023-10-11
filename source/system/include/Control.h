@@ -9,7 +9,7 @@
 #define _CONTROL_H_
 #include <sys/types.h>
 #include "Core.h"
-#include "RealTimeSched.h"
+#include "FifoSched.h"
 #include "AsymmetricArch.h"
 
 namespace System {

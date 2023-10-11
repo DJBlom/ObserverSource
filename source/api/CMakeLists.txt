@@ -13,7 +13,7 @@ file(GLOB RESULT ${PROJECT_SOURCE_DIR}/source)
 list(LENGTH RESULT FILES_IN_DIR)
 if(${FILES_IN_DIR} GREATER 0)
     add_library(api OBJECT
-        ${PROJECT_SOURCE_DIR}/source/RealTimeSched.cpp
+        ${PROJECT_SOURCE_DIR}/source/FifoSched.cpp
         ${PROJECT_SOURCE_DIR}/source/BinarySemaphores.cpp
     )
 
