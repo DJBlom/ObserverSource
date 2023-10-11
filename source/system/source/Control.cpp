@@ -9,7 +9,7 @@
 
 System::Control::Control(const pid_t& pid)
 {
-    this->sched = Api::RealTimeSched{pid};
+    this->sched = Api::FifoSched{pid};
     this->core = System::Core{policy};
 }
 

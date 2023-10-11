@@ -26,11 +26,11 @@ extern "C"
 TEST_GROUP(CoreTest)
 {
     System::Core core;
-    Api::RealTimeSched sched;
+    Api::FifoSched sched;
     void setup()
     {
         int pid = getpid();
-        sched = Api::RealTimeSched{pid};
+        sched = Api::FifoSched{pid};
     }
 
     void teardown()

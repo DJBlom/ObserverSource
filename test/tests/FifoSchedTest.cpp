@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: RealTimeSched Unit Tests
+ * Contents: FifoSched Unit Tests
  * Author: Dawid Blom
  * Date: October 1, 2023
  *
@@ -29,13 +29,13 @@ extern "C"
  * 7) A valid policy is 1 (Done)
  * 8) The number of semaphores = number of services (Done)
  ******************************************************************************/
-TEST_GROUP(RealTimeSchedTest)
+TEST_GROUP(FifoSchedTest)
 {
-    Api::RealTimeSched sched;
+    Api::FifoSched sched;
     void setup()
     {
         pid_t pid = getpid();
-        sched = Api::RealTimeSched{pid};
+        sched = Api::FifoSched{pid};
     }
 
     void teardown()
@@ -44,27 +44,27 @@ TEST_GROUP(RealTimeSchedTest)
 };
 
 
-TEST(RealTimeSchedTest, GetTheSystemPriorityBasedOnSCHED_FIFO)
+TEST(FifoSchedTest, GetTheSystemPriorityBasedOnSCHED_FIFO)
 {
     CHECK_EQUAL(99, sched.PriorityGet(SCHED_FIFO));
 }
 
 
-TEST(RealTimeSchedTest, PriorityIsInBounds)
+TEST(FifoSchedTest, PriorityIsInBounds)
 {
     CHECK_EQUAL(-1, sched.PriorityGet(SCHED_RR));
     CHECK_EQUAL(-1, sched.PriorityGet(SCHED_OTHER));
 }
 
 
-TEST(RealTimeSchedTest, CorrectlySetTheSystemScheduler)
+TEST(FifoSchedTest, CorrectlySetTheSystemScheduler)
 {
     int priority = sched.PriorityGet(SCHED_FIFO);
     CHECK_EQUAL(true, sched.SchedulerSet(priority));
 }
 
 
-TEST(RealTimeSchedTest, IncorrectlySetTheSystemScheduler)
+TEST(FifoSchedTest, IncorrectlySetTheSystemScheduler)
 {
     int priority = sched.PriorityGet(SCHED_RR);
     CHECK_EQUAL(false, sched.SchedulerSet(priority));

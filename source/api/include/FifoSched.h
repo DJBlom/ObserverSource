@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: RealTimeSched class
+ * Contents: FifoSched class
  * Author: Dawid Blom
  * Date: October 1, 2023
  *
@@ -10,15 +10,15 @@
 #include <cstring>
 #include "Sched.h"
 namespace Api {
-    class RealTimeSched : public Interface::Sched {
+    class FifoSched : public Interface::Sched {
         public:
-            RealTimeSched() = default;
-            explicit RealTimeSched(const pid_t& mainPid) : pid{mainPid} {}
-            RealTimeSched(const RealTimeSched&) = default;
-            RealTimeSched(RealTimeSched&&) = default;
-            RealTimeSched& operator= (const RealTimeSched&) = default;
-            RealTimeSched& operator= (RealTimeSched&&) = default;
-            virtual ~RealTimeSched() = default;
+            FifoSched() = default;
+            explicit FifoSched(const pid_t& mainPid) : pid{mainPid} {}
+            FifoSched(const FifoSched&) = default;
+            FifoSched(FifoSched&&) = default;
+            FifoSched& operator= (const FifoSched&) = default;
+            FifoSched& operator= (FifoSched&&) = default;
+            virtual ~FifoSched() = default;
 
             [[nodiscard]] virtual int PriorityGet(const int& schedPolicy) noexcept override;
             [[nodiscard]] virtual bool SchedulerSet(const int& priority) noexcept override;

@@ -29,7 +29,7 @@ namespace System {
             [[nodiscard]] bool Shutdown() noexcept;
 
         private:
-            Api::RealTimeSched sched;
+            Api::FifoSched sched;
             System::Core core;
             System::Asymmetric amp;
     };
