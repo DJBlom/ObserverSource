@@ -69,19 +69,3 @@ TEST(RealTimeSchedTest, IncorrectlySetTheSystemsScheduler)
     int priority = sched.PriorityGet(SCHED_RR);
     CHECK_EQUAL(false, sched.SchedulerSet(priority));
 }
-
-
-TEST(RealTimeSchedTest, InitializeSemaphores)
-{
-    const int size{4};
-    sem_t semaphores[size]{0};
-    CHECK_EQUAL(true, sched.InitializeSemaphores(semaphores, size));
-}
-
-
-TEST(RealTimeSchedTest, DestroySemaphores)
-{
-    const int size{4};
-    sem_t semaphores[size]{0};
-    CHECK_EQUAL(true, sched.DestroySemaphores(semaphores, size));
-}

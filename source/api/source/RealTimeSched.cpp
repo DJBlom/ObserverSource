@@ -38,32 +38,6 @@
 }
 
 
-[[nodiscard]] bool Api::RealTimeSched::InitializeSemaphores(sem_t semaphores[], const int& size) noexcept
-{
-    bool isReady{false};
-    for (int i = 0; i < size; i++)
-    {
-        sem_init(&semaphores[i], Default::pshared, Default::value);
-        isReady = true;
-    }
-
-    return isReady;
-}
-
-
-[[nodiscard]] bool Api::RealTimeSched::DestroySemaphores(sem_t semaphores[], const int& size) noexcept
-{
-    bool isReady{false};
-    for (int i = 0; i < size; i++)
-    {
-        sem_destroy(&semaphores[i]);
-        isReady = true;
-    }
-
-    return isReady;
-}
-
-
 [[nodiscard]] bool Api::RealTimeSched::PolicyIsValid(const int& schedPolicy) noexcept
 {
     bool isReady{false};

@@ -16,8 +16,6 @@ namespace Interface {
             virtual ~Sched() = default;
             [[nodiscard]] virtual int PriorityGet(const int&) = 0;
             [[nodiscard]] virtual bool SchedulerSet(const pid_t&) = 0;
-            [[nodiscard]] virtual bool InitializeSemaphores(sem_t*, const int& size) = 0;
-            [[nodiscard]] virtual bool DestroySemaphores(sem_t*, const int& size) = 0;
     };
 }
 #endif

@@ -22,8 +22,6 @@ namespace Api {
 
             [[nodiscard]] virtual int PriorityGet(const int& schedPolicy) noexcept override;
             [[nodiscard]] virtual bool SchedulerSet(const int& priority) noexcept override;
-            [[nodiscard]] virtual bool InitializeSemaphores(sem_t semaphores[], const int& size) noexcept override;
-            [[nodiscard]] virtual bool DestroySemaphores(sem_t semaphores[], const int& size) noexcept override;
 
         private:
             [[nodiscard]] bool PolicyIsValid(const int& policy) noexcept;
@@ -35,8 +33,6 @@ namespace Api {
 
             enum Default {
                 initialize = -1,
-                pshared = 0,
-                value = pshared
             };
 
             enum Bounds {
