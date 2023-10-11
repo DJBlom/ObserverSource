@@ -12,8 +12,8 @@ namespace Interface {
     class Semaphore {
         public:
             virtual ~Semaphore() = default;
-            [[nodiscard]] virtual bool InitializeSemaphores(sem_t*) = 0;
-            [[nodiscard]] virtual bool DestroySemaphores(sem_t*) = 0;
+            [[nodiscard]] virtual bool InitializeSemaphore(sem_t*) = 0;
+            [[nodiscard]] virtual bool DestroySemaphore(sem_t*) = 0;
             [[nodiscard]] virtual bool SemWait(sem_t*) = 0;
             [[nodiscard]] virtual bool SemPost(sem_t*) = 0;
     };

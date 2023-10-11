@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Contents: BinarySemaphores class
+ * Contents: BinarySemaphore class
  * Author: Dawid Blom
  * Date: October 1, 2023
  *
  * Note:
  ******************************************************************************/
-#include "BinarySemaphores.h"
+#include "BinarySemaphore.h"
 
 
-[[nodiscard]] bool Api::BinarySemaphores::InitializeSemaphores(sem_t* semaphore) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::InitializeSemaphore(sem_t* semaphore) noexcept
 {
     return ~(sem_init(semaphore, Default::PSHARED, Default::VALUE));
 }
 
 
-[[nodiscard]] bool Api::BinarySemaphores::DestroySemaphores(sem_t* semaphore) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::DestroySemaphore(sem_t* semaphore) noexcept
 {
     bool isDestroyed{true};
     if (IsNullptr(semaphore) == true)
@@ -30,7 +30,7 @@
 }
 
 
-[[nodiscard]] bool Api::BinarySemaphores::SemWait(sem_t* semaphore) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::SemWait(sem_t* semaphore) noexcept
 {
     bool isWaiting{true};
     if (IsNullptr(semaphore) == true)
@@ -46,7 +46,7 @@
 }
 
 
-[[nodiscard]] bool Api::BinarySemaphores::SemPost(sem_t* semaphore) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::SemPost(sem_t* semaphore) noexcept
 {
     bool isPosted{true};
     if (IsNullptr(semaphore) == true)
@@ -62,7 +62,7 @@
 }
 
 
-[[nodiscard]] bool Api::BinarySemaphores::IsNullptr(sem_t* semaphore) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::IsNullptr(sem_t* semaphore) noexcept
 {
     return (semaphore == nullptr);
 }

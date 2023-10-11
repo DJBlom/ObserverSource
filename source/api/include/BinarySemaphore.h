@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: BinarySemaphores class
+ * Contents: BinarySemaphore class
  * Author: Dawid Blom
  * Date: October 1, 2023
  *
@@ -9,17 +9,17 @@
 #define _BINARY_SEMAPHORES_H_
 #include "Semaphore.h"
 namespace Api {
-    class BinarySemaphores : public Interface::Semaphore {
+    class BinarySemaphore : public Interface::Semaphore {
         public:
-            BinarySemaphores() = default;
-            BinarySemaphores(const BinarySemaphores&) = default;
-            BinarySemaphores(BinarySemaphores&&) = default;
-            BinarySemaphores& operator= (const BinarySemaphores&) = default;
-            BinarySemaphores& operator= (BinarySemaphores&&) = default;
-            virtual ~BinarySemaphores() = default;
+            BinarySemaphore() = default;
+            BinarySemaphore(const BinarySemaphore&) = default;
+            BinarySemaphore(BinarySemaphore&&) = default;
+            BinarySemaphore& operator= (const BinarySemaphore&) = default;
+            BinarySemaphore& operator= (BinarySemaphore&&) = default;
+            virtual ~BinarySemaphore() = default;
 
-            [[nodiscard]] virtual bool InitializeSemaphores(sem_t* semaphores) noexcept override;
-            [[nodiscard]] virtual bool DestroySemaphores(sem_t* semaphores) noexcept override;
+            [[nodiscard]] virtual bool InitializeSemaphore(sem_t* semaphores) noexcept override;
+            [[nodiscard]] virtual bool DestroySemaphore(sem_t* semaphores) noexcept override;
             [[nodiscard]] virtual bool SemWait(sem_t* semaphore) noexcept override;
             [[nodiscard]] virtual bool SemPost(sem_t* semaphore) noexcept override;
 

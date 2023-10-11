@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: BinarySemaphores Unit Tests
+ * Contents: BinarySemaphore Unit Tests
  * Author: Dawid Blom
  * Date: October 1, 2023
  *
@@ -10,7 +10,7 @@
 
 #include <semaphore.h>
 
-#include "BinarySemaphores.h"
+#include "BinarySemaphore.h"
 extern "C"
 {
 
@@ -26,9 +26,9 @@ static sem_t semaphore{0};
  * 5) We should be able to post a semaphore (Done)
  * 6) We should not be able to wait or post on an uninitialized semaphore (Done)
  ******************************************************************************/
-TEST_GROUP(BinarySemaphoresTest)
+TEST_GROUP(BinarySemaphoreTest)
 {
-    Api::BinarySemaphores sem;
+    Api::BinarySemaphore sem;
     void setup()
     {
     }
@@ -39,35 +39,35 @@ TEST_GROUP(BinarySemaphoresTest)
 };
 
 
-TEST(BinarySemaphoresTest, InitializeBinarySemaphore)
+TEST(BinarySemaphoreTest, InitializeBinarySemaphore)
 {
-    CHECK_EQUAL(true, sem.InitializeSemaphores(&semaphore));
+    CHECK_EQUAL(true, sem.InitializeSemaphore(&semaphore));
 }
 
 
-TEST(BinarySemaphoresTest, DestroyInitializedBinarySemaphore)
+TEST(BinarySemaphoreTest, DestroyInitializedBinarySemaphore)
 {
-    CHECK_EQUAL(true, sem.DestroySemaphores(&semaphore));
+    CHECK_EQUAL(true, sem.DestroySemaphore(&semaphore));
 }
 
 
-TEST(BinarySemaphoresTest, DestroyUnintializedBinarySemaphore)
+TEST(BinarySemaphoreTest, DestroyUnintializedBinarySemaphore)
 {
     sem_t* semaphoreNullptr{nullptr};
-    CHECK_EQUAL(false, sem.DestroySemaphores(semaphoreNullptr));
+    CHECK_EQUAL(false, sem.DestroySemaphore(semaphoreNullptr));
 }
 
 
-TEST(BinarySemaphoresTest, LockAndUnlockAnInitializedSemaphore)
+TEST(BinarySemaphoreTest, LockAndUnlockAnInitializedSemaphore)
 {
-    CHECK_EQUAL(true, sem.InitializeSemaphores(&semaphore));
+    CHECK_EQUAL(true, sem.InitializeSemaphore(&semaphore));
     CHECK_EQUAL(true, sem.SemWait(&semaphore));
     CHECK_EQUAL(true, sem.SemPost(&semaphore));
-    CHECK_EQUAL(true, sem.DestroySemaphores(&semaphore));
+    CHECK_EQUAL(true, sem.DestroySemaphore(&semaphore));
 }
 
 
-TEST(BinarySemaphoresTest, AttemptToLockAndUnlockAnUnitializedNullptrSemaphore)
+TEST(BinarySemaphoreTest, AttemptToLockAndUnlockAnUnitializedNullptrSemaphore)
 {
     sem_t* semaphoreNullptr{nullptr};
     CHECK_EQUAL(false, sem.SemWait(semaphoreNullptr));
