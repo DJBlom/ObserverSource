@@ -16,8 +16,7 @@ extern "C"
 
 }
 
-static const int size{4};
-static sem_t semaphores[size]{0};
+static sem_t semaphore{0};
 
 /**********************************TEST LIST************************************
  * 1) Create system semaphores with a dedicated service count (Done)
@@ -33,7 +32,6 @@ TEST_GROUP(BinarySemaphoresTest)
     Api::BinarySemaphores sem;
     void setup()
     {
-        sem = Api::BinarySemaphores{4};
     }
 
     void teardown()
@@ -42,46 +40,46 @@ TEST_GROUP(BinarySemaphoresTest)
 };
 
 
-TEST(BinarySemaphoresTest, InitializeBinarySemaphores)
+TEST(BinarySemaphoresTest, InitializeBinarySemaphore)
 {
-    CHECK_EQUAL(true, sem.InitializeSemaphores(semaphores));
+    CHECK_EQUAL(true, sem.InitializeSemaphores(&semaphore));
 }
 
 
 TEST(BinarySemaphoresTest, DestroyBinarySemaphores)
 {
-    CHECK_EQUAL(true, sem.DestroySemaphores(semaphores));
+    CHECK_EQUAL(true, sem.DestroySemaphores(&semaphore));
 }
 
 
-TEST(BinarySemaphoresTest, NullptrBoundaryCheckBinarySemaphores)
+TEST(BinarySemaphoresTest, NullptrBoundaryCheckBinarySemaphore)
 {
-    sem_t* semaphore{nullptr};
-    CHECK_EQUAL(false, sem.InitializeSemaphores(semaphore));
-    CHECK_EQUAL(false, sem.DestroySemaphores(semaphore));
+    sem_t* semaphoreNullptr{nullptr};
+    CHECK_EQUAL(false, sem.InitializeSemaphores(semaphoreNullptr));
+    CHECK_EQUAL(false, sem.DestroySemaphores(semaphoreNullptr));
 }
 
 
 TEST(BinarySemaphoresTest, CountBoundaryCheckBinarySemaphore)
 {
     Api::BinarySemaphores failSem{-1};
-    CHECK_EQUAL(false, failSem.InitializeSemaphores(semaphores));
-    CHECK_EQUAL(false, failSem.DestroySemaphores(semaphores));
+    CHECK_EQUAL(false, failSem.InitializeSemaphores(&semaphore));
+    CHECK_EQUAL(false, failSem.DestroySemaphores(&semaphore));
 }
 
 
 TEST(BinarySemaphoresTest, LockAndUnlockAnInitializedSemaphore)
 {
-    CHECK_EQUAL(true, sem.InitializeSemaphores(semaphores));
-    CHECK_EQUAL(true, sem.SemWait(&semaphores[0]));
-    CHECK_EQUAL(true, sem.SemPost(&semaphores[0]));
-    CHECK_EQUAL(true, sem.DestroySemaphores(semaphores));
+    CHECK_EQUAL(true, sem.InitializeSemaphores(&semaphore));
+    CHECK_EQUAL(true, sem.SemWait(&semaphore));
+    CHECK_EQUAL(true, sem.SemPost(&semaphore));
+    CHECK_EQUAL(true, sem.DestroySemaphores(&semaphore));
 }
 
 
 TEST(BinarySemaphoresTest, AttemptToLockAndUnlockAnUnitializedNullptrSemaphore)
 {
-    sem_t* semaphore{nullptr};
-    CHECK_EQUAL(false, sem.SemWait(semaphore));
-    CHECK_EQUAL(false, sem.SemPost(semaphore));
+    sem_t* semaphoreNullptr{nullptr};
+    CHECK_EQUAL(false, sem.SemWait(semaphoreNullptr));
+    CHECK_EQUAL(false, sem.SemPost(semaphoreNullptr));
 }

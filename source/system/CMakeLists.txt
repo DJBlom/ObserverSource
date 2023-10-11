@@ -18,7 +18,6 @@ list(LENGTH RESULT FILES_IN_DIR)
 if(${FILES_IN_DIR} GREATER 0)
     add_library(system OBJECT
         ${PROJECT_SOURCE_DIR}/source/Control.cpp
-        ${PROJECT_SOURCE_DIR}/source/AsymmetricArch.cpp
     )
 
     target_include_directories(system PRIVATE

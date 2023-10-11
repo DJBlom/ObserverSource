@@ -24,7 +24,6 @@ set(PROJECT_SOURCES
     ${PROJECT_SOURCE_DIR}/../source/api/source/FifoSched.cpp
     ${PROJECT_SOURCE_DIR}/../source/api/source/BinarySemaphores.cpp
     ${PROJECT_SOURCE_DIR}/../source/system/source/Control.cpp
-    ${PROJECT_SOURCE_DIR}/../source/system/source/AsymmetricArch.cpp
 )
 
 set(PROJECT_INCLUDES

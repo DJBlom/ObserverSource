@@ -9,7 +9,6 @@
 #define _CONTROL_H_
 #include <sys/types.h>
 #include "FifoSched.h"
-#include "AsymmetricArch.h"
 
 namespace System {
     constexpr int policy{SCHED_FIFO};
@@ -29,7 +28,6 @@ namespace System {
 
         private:
             Api::FifoSched sched;
-            System::Asymmetric amp;
     };
 }
 #endif
