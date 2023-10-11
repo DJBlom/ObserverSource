@@ -54,7 +54,7 @@ TEST(BinarySemaphoresTest, DestroyBinarySemaphores)
 }
 
 
-TEST(BinarySemaphoresTest, BoundaryCheckBinarySemaphores)
+TEST(BinarySemaphoresTest, NullptrBoundaryCheckBinarySemaphores)
 {
     sem_t* semaphore{nullptr};
     CHECK_EQUAL(false, sem.InitializeSemaphores(semaphore));
@@ -62,7 +62,15 @@ TEST(BinarySemaphoresTest, BoundaryCheckBinarySemaphores)
 }
 
 
-TEST(BinarySemaphoresTest, TakeASemaphoreToLockAProcessThenGiveItBack)
+TEST(BinarySemaphoresTest, CountBoundaryCheckBinarySemaphore)
+{
+    Api::BinarySemaphores failSem{-1};
+    CHECK_EQUAL(false, failSem.InitializeSemaphores(semaphores));
+    CHECK_EQUAL(false, failSem.DestroySemaphores(semaphores));
+}
+
+
+TEST(BinarySemaphoresTest, LockAndUnlockAnInitializedSemaphore)
 {
     CHECK_EQUAL(true, sem.InitializeSemaphores(semaphores));
     CHECK_EQUAL(true, sem.SemWait(&semaphores[0]));
@@ -71,7 +79,7 @@ TEST(BinarySemaphoresTest, TakeASemaphoreToLockAProcessThenGiveItBack)
 }
 
 
-TEST(BinarySemaphoresTest, TakeABadSemaphoreToLockAProcessThenGiveItBack)
+TEST(BinarySemaphoresTest, AttemptToLockAndUnlockAnUnitializedNullptrSemaphore)
 {
     sem_t* semaphore{nullptr};
     CHECK_EQUAL(false, sem.SemWait(semaphore));

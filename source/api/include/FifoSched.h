@@ -28,22 +28,22 @@ namespace Api {
             [[nodiscard]] bool PriorityIsValid(const int& priority) noexcept;
 
         private:
-            int policy{Default::initialize};
-            pid_t pid{Default::initialize};
+            int policy{Default::INIT};
+            pid_t pid{Default::INIT};
 
             enum Default {
-                initialize = -1,
+                INIT = -1,
             };
 
             enum Bounds {
-                schedLower = 0,
-                schedUpper = 2,
-                priorityLower = schedLower,
-                priorityUpper = 100
+                SCHED_LOWER = 0,
+                SCHED_UPPER = 2,
+                PRIORITY_LOWER = SCHED_LOWER,
+                PRIORITY_UPPER = 100
             };
 
             enum Status {
-                ok = 0
+                OK = 0
             };
     };
 }

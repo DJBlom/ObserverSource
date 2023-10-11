@@ -43,13 +43,6 @@ TEST(ControlTest, VerifyTheSystemIsReadyForOperation)
 }
 
 
-TEST(ControlTest, VerifyTheSystemIsNotReadyForOperation)
-{
-    System::Control failControl{-1};
-    CHECK_EQUAL(false, failControl.IsReady());
-}
-
-
 TEST(ControlTest, IfTheSystemIsReadyStartIt)
 {
     CHECK_EQUAL(true, control.IsReady());

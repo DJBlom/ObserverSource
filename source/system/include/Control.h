@@ -8,7 +8,6 @@
 #ifndef _CONTROL_H_
 #define _CONTROL_H_
 #include <sys/types.h>
-#include "Core.h"
 #include "FifoSched.h"
 #include "AsymmetricArch.h"
 
@@ -30,7 +29,6 @@ namespace System {
 
         private:
             Api::FifoSched sched;
-            System::Core core;
             System::Asymmetric amp;
     };
 }

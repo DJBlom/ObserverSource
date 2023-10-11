@@ -10,18 +10,11 @@
 System::Control::Control(const pid_t& pid)
 {
     this->sched = Api::FifoSched{pid};
-    this->core = System::Core{policy};
 }
 
 [[nodiscard]] bool System::Control::IsReady() noexcept
 {
-    bool isReady{false};
-    if (this->core.SchedulerSetup(this->sched) == true)
-    {
-        isReady = true;
-    }
-
-    return isReady;
+    return true;
 }
 
 

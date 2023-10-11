@@ -80,8 +80,5 @@
 
 [[nodiscard]] bool Api::BinarySemaphores::OutOfBounds(sem_t* semaphores) noexcept
 {
-    return ((semaphores == nullptr) || (this->count < Bounds::COUNTLOWER));
+    return ((semaphores == nullptr) || (this->count < Bounds::COUNT_LOWER));
 }
-
-
-

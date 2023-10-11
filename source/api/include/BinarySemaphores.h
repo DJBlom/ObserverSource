@@ -36,7 +36,7 @@ namespace Api {
             };
 
             enum Bounds {
-                COUNTLOWER = 1
+                COUNT_LOWER = 1
             };
     };
 }

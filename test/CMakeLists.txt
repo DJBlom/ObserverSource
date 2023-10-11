@@ -15,7 +15,6 @@ project(${PROJECT_NAME} LANGUAGES CXX C)
 
 set(TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/tests/ControlTest.cpp
-    ${PROJECT_SOURCE_DIR}/tests/CoreTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/FifoSchedTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/BinarySemaphoresTest.cpp
     ${PROJECT_SOURCE_DIR}/mocks/source/
@@ -25,7 +24,6 @@ set(PROJECT_SOURCES
     ${PROJECT_SOURCE_DIR}/../source/api/source/FifoSched.cpp
     ${PROJECT_SOURCE_DIR}/../source/api/source/BinarySemaphores.cpp
     ${PROJECT_SOURCE_DIR}/../source/system/source/Control.cpp
-    ${PROJECT_SOURCE_DIR}/../source/system/source/Core.cpp
     ${PROJECT_SOURCE_DIR}/../source/system/source/AsymmetricArch.cpp
 )
 
