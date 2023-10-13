@@ -5,9 +5,8 @@
  *
  * Note:
  ******************************************************************************/
-#ifndef _REAL_TIME_SCHED_H_
-#define _REAL_TIME_SCHED_H_
-#include <cstring>
+#ifndef _FIFO_SCHED_H_
+#define _FIFO_SCHED_H_
 #include "Sched.h"
 namespace Api {
     class FifoSched : public Interface::Sched {

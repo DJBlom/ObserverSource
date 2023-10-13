@@ -8,61 +8,57 @@
 #include "BinarySemaphore.h"
 
 
-[[nodiscard]] bool Api::BinarySemaphore::InitializeSemaphore(sem_t* semaphore) noexcept
+Api::BinarySemaphore::BinarySemaphore(const int& numberOfThreads) : threadCount{numberOfThreads}
 {
-    return ~(sem_init(semaphore, Default::PSHARED, Default::VALUE));
+    for (int i = 0; i < this->threadCount; i++)
+    {
+        sem_init(&semaphores[i], Default::PSHARED, Default::VALUE);
+    }
 }
 
 
-[[nodiscard]] bool Api::BinarySemaphore::DestroySemaphore(sem_t* semaphore) noexcept
-{
-    bool isDestroyed{true};
-    if (IsNullptr(semaphore) == true)
-    {
-        isDestroyed = false;
-    }
-    else
-    {
-        sem_destroy(semaphore);
-    }
-
-    return isDestroyed;
-}
+//Api::BinarySemaphore::~BinarySemaphore()
+//{
+//    for (int i = 0; i < this->threadCount; i++)
+//    {
+//        sem_destroy(&semaphores[i]);
+//    }
+//}
 
 
-[[nodiscard]] bool Api::BinarySemaphore::SemWait(sem_t* semaphore) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::SemWait(const int& threadNum) noexcept
 {
     bool isWaiting{true};
-    if (IsNullptr(semaphore) == true)
+    if (ThreadNumNotInRange(threadNum) == true)
     {
         isWaiting = false;
     }
     else
     {
-        sem_wait(semaphore);
+        sem_post(&this->semaphores[threadNum]);
     }
 
     return isWaiting;
 }
 
 
-[[nodiscard]] bool Api::BinarySemaphore::SemPost(sem_t* semaphore) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::SemPost(const int& threadNum) noexcept
 {
     bool isPosted{true};
-    if (IsNullptr(semaphore) == true)
+    if (ThreadNumNotInRange(threadNum) == true)
     {
         isPosted = false;
     }
     else
     {
-        sem_post(semaphore);
+        sem_post(&semaphores[threadNum]);
     }
 
     return isPosted;
 }
 
 
-[[nodiscard]] bool Api::BinarySemaphore::IsNullptr(sem_t* semaphore) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::ThreadNumNotInRange(const int& threadNum) noexcept
 {
-    return (semaphore == nullptr);
+    return ((threadNum < 0) || (threadNum > this->threadCount));
 }

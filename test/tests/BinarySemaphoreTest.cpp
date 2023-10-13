@@ -16,7 +16,6 @@ extern "C"
 
 }
 
-static sem_t semaphore{0};
 
 /**********************************TEST LIST************************************
  * 1) Initialize binary semaphore (Done)
@@ -31,6 +30,7 @@ TEST_GROUP(BinarySemaphoreTest)
     Api::BinarySemaphore sem;
     void setup()
     {
+        sem = Api::BinarySemaphore{6};
     }
 
     void teardown()
@@ -39,37 +39,32 @@ TEST_GROUP(BinarySemaphoreTest)
 };
 
 
-TEST(BinarySemaphoreTest, InitializeBinarySemaphore)
+TEST(BinarySemaphoreTest, LockUnlockInRangeSemaphore)
 {
-    CHECK_EQUAL(true, sem.InitializeSemaphore(&semaphore));
+    CHECK_EQUAL(true, sem.SemWait(3));
+    CHECK_EQUAL(true, sem.SemPost(3));
 }
 
 
-TEST(BinarySemaphoreTest, DestroyInitializedBinarySemaphore)
+TEST(BinarySemaphoreTest, VerifyTheCorrectRangeOfSemaphoreInitialization)
 {
-    CHECK_EQUAL(true, sem.DestroySemaphore(&semaphore));
+    CHECK_EQUAL(true, sem.SemWait(0));
+    CHECK_EQUAL(true, sem.SemPost(0));
+
+    CHECK_EQUAL(true, sem.SemWait(6));
+    CHECK_EQUAL(true, sem.SemPost(6));
 }
 
 
-TEST(BinarySemaphoreTest, DestroyUnintializedBinarySemaphore)
+TEST(BinarySemaphoreTest, UpperBoundaryChecking)
 {
-    sem_t* semaphoreNullptr{nullptr};
-    CHECK_EQUAL(false, sem.DestroySemaphore(semaphoreNullptr));
+    CHECK_EQUAL(false, sem.SemWait(7));
+    CHECK_EQUAL(false, sem.SemPost(7));
 }
 
 
-TEST(BinarySemaphoreTest, LockAndUnlockAnInitializedSemaphore)
+TEST(BinarySemaphoreTest, LowerBoundaryChecking)
 {
-    CHECK_EQUAL(true, sem.InitializeSemaphore(&semaphore));
-    CHECK_EQUAL(true, sem.SemWait(&semaphore));
-    CHECK_EQUAL(true, sem.SemPost(&semaphore));
-    CHECK_EQUAL(true, sem.DestroySemaphore(&semaphore));
-}
-
-
-TEST(BinarySemaphoreTest, AttemptToLockAndUnlockAnUnitializedNullptrSemaphore)
-{
-    sem_t* semaphoreNullptr{nullptr};
-    CHECK_EQUAL(false, sem.SemWait(semaphoreNullptr));
-    CHECK_EQUAL(false, sem.SemPost(semaphoreNullptr));
+    CHECK_EQUAL(false, sem.SemWait(-1));
+    CHECK_EQUAL(false, sem.SemPost(-1));
 }

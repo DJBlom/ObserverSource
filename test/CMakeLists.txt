@@ -16,12 +16,14 @@ project(${PROJECT_NAME} LANGUAGES CXX C)
 set(TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/tests/ControlTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/FifoSchedTest.cpp
+    ${PROJECT_SOURCE_DIR}/tests/RtThreadAttrTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/BinarySemaphoreTest.cpp
     ${PROJECT_SOURCE_DIR}/mocks/source/
 )
 
 set(PROJECT_SOURCES
     ${PROJECT_SOURCE_DIR}/../source/api/source/FifoSched.cpp
+    ${PROJECT_SOURCE_DIR}/../source/api/source/RtThreadAttr.cpp
     ${PROJECT_SOURCE_DIR}/../source/api/source/BinarySemaphore.cpp
     ${PROJECT_SOURCE_DIR}/../source/system/source/Control.cpp
 )
