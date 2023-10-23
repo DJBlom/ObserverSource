@@ -97,7 +97,7 @@ Coverage()
                                                              -DCODE_COVERAGE=ON
     $CMAKE --build $BUILD_DIR/$TEST_DIR
     lcov --rc lcov_branch_coverage=1 --directory . --capture --output-file $BUILD_DIR/$TEST_DIR/coverage.info
-    lcov --rc lcov_branch_coverage=1 --remove $BUILD_DIR/$TEST_DIR/coverage.info $(pwd)/source/api/include/* \
+    lcov --rc lcov_branch_coverage=1 --remove $BUILD_DIR/$TEST_DIR/coverage.info '/usr/*' $(pwd)/source/api/include/* \
         $(pwd)/source/feature/include/* $(pwd)/source/system/include/* $(pwd)/test/tests/* $(pwd)/test/mocks/include/* \
         $(pwd)/test/mocks/source/* --output-file $BUILD_DIR/$TEST_DIR/filtered_coverage.info
     lcov --rc lcov_branch_coverage=1 --list $BUILD_DIR/$TEST_DIR/filtered_coverage.info > $BUILD_DIR/$TEST_DIR/coverage.txt

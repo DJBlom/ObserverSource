@@ -12,8 +12,8 @@ namespace Interface {
     class Semaphore {
         public:
             virtual ~Semaphore() = default;
-            [[nodiscard]] virtual bool SemWait(const int&) = 0;
-            [[nodiscard]] virtual bool SemPost(const int&) = 0;
+            [[nodiscard]] virtual bool Acquire() = 0;
+            [[nodiscard]] virtual bool Release() = 0;
     };
 }
 #endif

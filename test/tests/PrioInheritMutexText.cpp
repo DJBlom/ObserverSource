@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: BinarySemaphore Unit Tests
+ * Contents: PrioInheritMutex Unit Tests
  * Author: Dawid Blom
  * Date: October 22, 2023
  *
@@ -8,7 +8,7 @@
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
-#include <BinarySemaphore.h>
+#include <PrioInheritMutex.h>
 extern "C"
 {
 
@@ -17,15 +17,15 @@ extern "C"
 
 
 /**********************************TEST LIST************************************
- * 1) The binary semaphore should be initialized to pshared=0 and value=1 (Done)
- * 2) The binary semaphore should be able to acquire the semaphore (Done)
- * 3) The binary sempahore should be able to release the semaphore (Done)
- * 4) The binary semaphore should be destroyed when no longer used (Done)
+ * 1) The mutex should be inherit with the PRIORITY_INHERITANCE attribute (Done)
+ * 2) The mutex should be able to lock (Done)
+ * 3) The mutex should be able to unlock (Done)
+ * 4) The mutex should be destroyed when no longer used (Done)
  ******************************************************************************/
-TEST_GROUP(BinarySemaphoreTest)
+TEST_GROUP(PrioInheritMutexTest)
 {
     bool expectedReturn{true};
-    Api::BinarySemaphore binSem;
+    Api::PrioInheritMutex prioInheritMutex;
     void setup()
     {
     }
@@ -36,13 +36,14 @@ TEST_GROUP(BinarySemaphoreTest)
 };
 
 
-TEST(BinarySemaphoreTest, ReleaseTheSemaphore)
+TEST(PrioInheritMutexTest, LockTheMutex)
 {
-    CHECK_EQUAL(expectedReturn, binSem.Release());
+    CHECK_EQUAL(expectedReturn, prioInheritMutex.Lock());
 }
 
 
-TEST(BinarySemaphoreTest, AcquireTheSemaphore)
+TEST(PrioInheritMutexTest, UnlockTheMutex)
 {
-    CHECK_EQUAL(expectedReturn, binSem.Acquire());
+    CHECK_EQUAL(expectedReturn, prioInheritMutex.Lock());
+    CHECK_EQUAL(expectedReturn, prioInheritMutex.Unlock());
 }

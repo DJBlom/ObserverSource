@@ -1,64 +1,28 @@
 /*******************************************************************************
- * Contents: BinarySemaphore class
+ * Contents: BinarySemaphore implementation
  * Author: Dawid Blom
- * Date: October 1, 2023
+ * Date: October 22, 2023
  *
  * Note:
  ******************************************************************************/
-#include "BinarySemaphore.h"
+#include <BinarySemaphore.h>
 
 
-Api::BinarySemaphore::BinarySemaphore(const int& numberOfThreads) : threadCount{numberOfThreads}
+[[nodiscard]] bool Api::BinarySemaphore::Acquire() noexcept
 {
-    for (int i = 0; i < this->threadCount; i++)
-    {
-        sem_init(&semaphores[i], Default::PSHARED, Default::VALUE);
-    }
+    bool isAcquired{false};
+    if (sem_wait(&this->semaphore) == 0)
+        isAcquired = true;
+
+    return isAcquired;
 }
 
 
-//Api::BinarySemaphore::~BinarySemaphore()
-//{
-//    for (int i = 0; i < this->threadCount; i++)
-//    {
-//        sem_destroy(&semaphores[i]);
-//    }
-//}
-
-
-[[nodiscard]] bool Api::BinarySemaphore::SemWait(const int& threadNum) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::Release() noexcept
 {
-    bool isWaiting{true};
-    if (ThreadNumNotInRange(threadNum) == true)
-    {
-        isWaiting = false;
-    }
-    else
-    {
-        sem_post(&this->semaphores[threadNum]);
-    }
+    bool isReleased{false};
+    if (sem_post(&this->semaphore) == 0)
+        isReleased = true;
 
-    return isWaiting;
-}
-
-
-[[nodiscard]] bool Api::BinarySemaphore::SemPost(const int& threadNum) noexcept
-{
-    bool isPosted{true};
-    if (ThreadNumNotInRange(threadNum) == true)
-    {
-        isPosted = false;
-    }
-    else
-    {
-        sem_post(&semaphores[threadNum]);
-    }
-
-    return isPosted;
-}
-
-
-[[nodiscard]] bool Api::BinarySemaphore::ThreadNumNotInRange(const int& threadNum) noexcept
-{
-    return ((threadNum < 0) || (threadNum > this->threadCount));
+    return isReleased;
 }

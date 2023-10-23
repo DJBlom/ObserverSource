@@ -5,11 +5,11 @@
  *
  * Note:
  ******************************************************************************/
-#include "Control.h"
+#include <Control.h>
 
 System::Control::Control(const pid_t& pid)
 {
-    this->sched = Api::FifoSched{pid};
+    this->mainpid = pid;
 }
 
 [[nodiscard]] bool System::Control::IsReady() noexcept

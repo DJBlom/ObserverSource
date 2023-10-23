@@ -8,7 +8,7 @@
 #ifndef _CONTROL_H_
 #define _CONTROL_H_
 #include <sys/types.h>
-#include "FifoSched.h"
+#include <thread>
 
 namespace System {
     constexpr int policy{SCHED_FIFO};
@@ -27,7 +27,7 @@ namespace System {
             [[nodiscard]] bool Shutdown() noexcept;
 
         private:
-            Api::FifoSched sched;
+            int mainpid{0};
     };
 }
 #endif

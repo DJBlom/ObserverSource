@@ -13,9 +13,9 @@ file(GLOB RESULT ${PROJECT_SOURCE_DIR}/source)
 list(LENGTH RESULT FILES_IN_DIR)
 if(${FILES_IN_DIR} GREATER 0)
     add_library(api OBJECT
-        ${PROJECT_SOURCE_DIR}/source/FifoSched.cpp
-        ${PROJECT_SOURCE_DIR}/source/RtThreadAttr.cpp
         ${PROJECT_SOURCE_DIR}/source/BinarySemaphore.cpp
+        ${PROJECT_SOURCE_DIR}/source/PrioInheritMutex.cpp
+        ${PROJECT_SOURCE_DIR}/source/RealtimeThread.cpp
     )
 
     target_include_directories(api PRIVATE

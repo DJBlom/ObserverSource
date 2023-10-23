@@ -77,3 +77,20 @@ TEST(PosixApiTest, PhtreadAttrSetAffinityNp)
     CHECK_EQUAL(0, pthread_attr_setaffinity_np(&attr, sizeof(setOfCPUs), &setOfCPUs));
     CHECK_EQUAL(3, CPU_COUNT(&setOfCPUs));
 }
+
+
+TEST(PosixApiTest, VerifyArrayInitialization)
+{
+    const int size{3};
+    int testArr[size]{0};
+    CHECK_EQUAL(0, testArr[0]);
+    CHECK_EQUAL(0, testArr[1]);
+    CHECK_EQUAL(0, testArr[2]);
+}
+
+
+TEST(PosixApiTest, CheckPriorityFunctionality)
+{
+    CHECK_EQUAL(99, sched_get_priority_max(SCHED_FIFO));
+    CHECK_EQUAL(0, sched_get_priority_max(6));
+}
