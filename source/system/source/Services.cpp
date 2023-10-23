@@ -8,7 +8,7 @@
 #include <Services.h>
 
 
-void* System::Services::Input(void*) noexcept
+void* System::Services::Input(void*)
 {
     int num{0};
     while (!System::Services::abortInput)
@@ -25,7 +25,7 @@ void* System::Services::Input(void*) noexcept
 }
 
 
-void* System::Services::ProcessData(void*) noexcept
+void* System::Services::ProcessData(void*)
 {
     int num{0};
     while (!System::Services::abortProcessData)
@@ -38,7 +38,7 @@ void* System::Services::ProcessData(void*) noexcept
 }
 
 
-void* System::Services::Output(void*) noexcept
+void* System::Services::Output(void*)
 {
     int num{0};
     while (!System::Services::abortOutput)
@@ -51,7 +51,7 @@ void* System::Services::Output(void*) noexcept
 }
 
 
-void* System::Services::Sequencer(void*) noexcept
+void* System::Services::Sequencer(void*)
 {
     int executionCount{0};
     while (!System::Services::abortSystem)
@@ -100,7 +100,7 @@ void* System::Services::Sequencer(void*) noexcept
 }
 
 
-[[nodiscard]] bool System::Services::Abort(const bool& abort) noexcept
+[[nodiscard]] bool System::Services::Abort(const bool& abort)
 {
     if (abort == true)
         System::Services::abortSystem = abort;

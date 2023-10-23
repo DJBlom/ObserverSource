@@ -22,11 +22,11 @@ namespace System {
             Services& operator= (Services&&) = delete;
             ~Services() = default;
 
-            static void* Input(void*) noexcept;
-            static void* ProcessData(void*) noexcept;
-            static void* Output(void*) noexcept;
-            static void* Sequencer(void*) noexcept;
-            [[nodiscard]] static bool Abort(const bool& abort) noexcept;
+            static void* Input(void*);
+            static void* ProcessData(void*);
+            static void* Output(void*);
+            static void* Sequencer(void*);
+            [[nodiscard]] static bool Abort(const bool& abort);
 
         private:
             inline static bool abortSystem{false};

@@ -13,6 +13,7 @@
 #include <RealtimeThread.h>
 
 
+
 int main(void)
 {
     pid_t pid = getpid();
@@ -31,35 +32,39 @@ int main(void)
     Api::RealtimeThread processData{2, priority - 3};
     Api::RealtimeThread output{3, priority - 4};
 
+
     syslog(LOG_CRIT, "System Started\n");
 
     if (sequencer.Start(&System::Services::Sequencer) == false)
-        return 0;
+        std::cout << "Failed to create sequencer\n";
 
     if (input.Start(&System::Services::Input) == false)
-        return 0;
+        std::cout << "Failed to create input\n";
 
     if (processData.Start(&System::Services::ProcessData) == false)
-        return 0;
+        std::cout << "Failed to create process data\n";
 
     if (output.Start(&System::Services::Output) == false)
-        return 0;
+        std::cout << "Failed to create output\n";
 
-    //if (System::Services::Abort(true) == false)
-    //{
-        if (sequencer.Stop() == false)
-            std::cout << "Failed to join sequencer\n";
+    syslog(LOG_CRIT, "Finished Creating\n");
 
-        if (input.Stop() == false)
-            std::cout << "Failed to join input\n";
+//    if (System::Services::Abort(true) == false)
+//        std::cout << "Failed to abort system\n";
 
-        if (processData.Stop() == false)
-            std::cout << "Failed to join process data\n";
+    if (sequencer.Stop() == false)
+        std::cout << "Failed to join sequencer\n";
 
-        if (output.Stop() == false)
-            std::cout << "Failed to join output\n";
-    //}
-        syslog(LOG_CRIT, "System Shutdown\n");
+    if (input.Stop() == false)
+        std::cout << "Failed to join input\n";
+
+    if (processData.Stop() == false)
+        std::cout << "Failed to join process data\n";
+
+    if (output.Stop() == false)
+        std::cout << "Failed to join output\n";
+
+    syslog(LOG_CRIT, "System Shutdown\n");
 
     return 0;
 }
