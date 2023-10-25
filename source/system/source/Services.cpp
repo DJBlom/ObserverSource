@@ -77,7 +77,6 @@ void* System::Services::Sequencer(void*)
             synch = System::Services::outputSem.Release(true);
     }
 
-    /*
     if (System::Services::inputSem.Release(true) == true)
         System::Services::abortInput = true;
 
@@ -86,7 +85,6 @@ void* System::Services::Sequencer(void*)
 
     if (System::Services::outputSem.Release(true) == true)
         System::Services::abortOutput = true;
-    */
 
     pthread_exit(nullptr);
 }
@@ -94,18 +92,7 @@ void* System::Services::Sequencer(void*)
 
 [[nodiscard]] bool System::Services::Abort(const bool& abort)
 {
-    if (abort == true)
-    {
-        System::Services::abortSystem = abort;
-        if (System::Services::inputSem.Release(true) == true)
-            System::Services::abortInput = true;
-
-        if (System::Services::processDataSem.Release(true) == true)
-            System::Services::abortProcessData = true;
-
-        if (System::Services::outputSem.Release(true) == true)
-            System::Services::abortOutput = true;
-    }
+    System::Services::abortSystem = abort;
 
     return System::Services::abortSystem;
 }
