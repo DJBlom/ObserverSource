@@ -58,9 +58,9 @@ TEST_GROUP(RealtimeThreadTest)
 {
     bool expectedReturn{true};
     Api::RealtimeThread sequencer{1, 99};
-    Api::RealtimeThread input{2, 98};
-    Api::RealtimeThread processData{2, 97};
-    Api::RealtimeThread output{3, 96};
+    Api::RealtimeThread input{1, 98};
+    Api::RealtimeThread processData{1, 97};
+    Api::RealtimeThread output{1, 96};
     void setup()
     {
     }
