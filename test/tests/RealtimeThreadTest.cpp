@@ -9,7 +9,7 @@
 #include "CppUTestExt/MockSupport.h"
 
 #include <iostream>
-
+#include <Services.h>
 #include <RealtimeThread.h>
 extern "C"
 {
@@ -27,6 +27,7 @@ extern "C"
  * 2) The thread should ready to start after creation (Done)
  * 3) The thread should stop when specified (Done)
  ******************************************************************************/
+/*
 TEST_GROUP(RealtimeThreadTest)
 {
     bool expectedReturn{true};
@@ -51,4 +52,52 @@ TEST(RealtimeThreadTest, VerifyThreadCreationAndDestruction)
 {
     CHECK_EQUAL(expectedReturn, service.Start(&Service));
     CHECK_EQUAL(expectedReturn, service.Stop());
+}
+*/
+TEST_GROUP(RealtimeThreadTest)
+{
+    bool expectedReturn{true};
+    Api::RealtimeThread sequencer{1, 99};
+    Api::RealtimeThread input{2, 98};
+    Api::RealtimeThread processData{2, 97};
+    Api::RealtimeThread output{3, 96};
+    void setup()
+    {
+    }
+
+    void teardown()
+    {
+    }
+};
+
+
+TEST(RealtimeThreadTest, VerifySequencerThread)
+{
+    CHECK_EQUAL(expectedReturn, sequencer.Start(&System::Services::Sequencer));
+    CHECK_EQUAL(expectedReturn, System::Services::Abort(true));
+    CHECK_EQUAL(expectedReturn, sequencer.Stop());
+}
+
+
+TEST(RealtimeThreadTest, VerifyInputThread)
+{
+    CHECK_EQUAL(expectedReturn, input.Start(&System::Services::Input));
+    CHECK_EQUAL(expectedReturn, System::Services::Abort(true));
+    CHECK_EQUAL(expectedReturn, input.Stop());
+}
+
+
+TEST(RealtimeThreadTest, VerifyProcessDataThread)
+{
+    CHECK_EQUAL(expectedReturn, processData.Start(&System::Services::ProcessData));
+    CHECK_EQUAL(expectedReturn, System::Services::Abort(true));
+    CHECK_EQUAL(expectedReturn, processData.Stop());
+}
+
+
+TEST(RealtimeThreadTest, VerifyOutputThread)
+{
+    CHECK_EQUAL(expectedReturn, output.Start(&System::Services::Output));
+    CHECK_EQUAL(expectedReturn, System::Services::Abort(true));
+    CHECK_EQUAL(expectedReturn, output.Stop());
 }
