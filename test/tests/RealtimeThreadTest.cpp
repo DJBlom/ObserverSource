@@ -27,33 +27,6 @@ extern "C"
  * 2) The thread should ready to start after creation (Done)
  * 3) The thread should stop when specified (Done)
  ******************************************************************************/
-/*
-TEST_GROUP(RealtimeThreadTest)
-{
-    bool expectedReturn{true};
-    Api::RealtimeThread service{1, 99};
-    void setup()
-    {
-    }
-
-    void teardown()
-    {
-    }
-};
-
-
-void* Service(void*)
-{
-    std::cout << "Working...\n";
-    pthread_exit(nullptr);
-}
-
-TEST(RealtimeThreadTest, VerifyThreadCreationAndDestruction)
-{
-    CHECK_EQUAL(expectedReturn, service.Start(&Service));
-    CHECK_EQUAL(expectedReturn, service.Stop());
-}
-*/
 TEST_GROUP(RealtimeThreadTest)
 {
     bool expectedReturn{true};
