@@ -23,6 +23,7 @@ set(TEST_SOURCES
 
 set(PROJECT_SOURCES
     ${PROJECT_SOURCE_DIR}/../source/system/source/Control.cpp
+    ${PROJECT_SOURCE_DIR}/../source/system/source/Services.cpp
     ${PROJECT_SOURCE_DIR}/../source/api/source/BinarySemaphore.cpp
     ${PROJECT_SOURCE_DIR}/../source/api/source/RealtimeThread.cpp
     ${PROJECT_SOURCE_DIR}/../source/api/source/PrioInheritMutex.cpp
