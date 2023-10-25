@@ -13,7 +13,7 @@ void* System::Services::Input(void*)
     int num{0};
     while (!System::Services::abortInput)
     {
-        if (System::Services::inputSem.Acquire(true) == false)
+        if (System::Services::inputSem.Acquire() == false)
             break;
 
         // Business logic goes here
@@ -30,7 +30,7 @@ void* System::Services::ProcessData(void*)
     int num{0};
     while (!System::Services::abortProcessData)
     {
-        if (System::Services::processDataSem.Acquire(true) == false)
+        if (System::Services::processDataSem.Acquire() == false)
             break;
 
         // Business logic goes here
@@ -47,7 +47,7 @@ void* System::Services::Output(void*)
     int num{0};
     while (!System::Services::abortOutput)
     {
-        if (System::Services::outputSem.Acquire(true) == false)
+        if (System::Services::outputSem.Acquire() == false)
             break;
 
         // Business logic goes here
@@ -68,22 +68,22 @@ void* System::Services::Sequencer(void*)
         std::this_thread::sleep_for(std::chrono::nanoseconds(10000000));
         executionCount++;
         if ((executionCount % 2) == 0)
-            synch = System::Services::inputSem.Release(true);
+            synch = System::Services::inputSem.Release();
 
         if ((executionCount % 10) == 0)
-            synch = System::Services::processDataSem.Release(true);
+            synch = System::Services::processDataSem.Release();
 
         if ((executionCount % 20) == 0)
-            synch = System::Services::outputSem.Release(true);
+            synch = System::Services::outputSem.Release();
     }
 
-    if (System::Services::inputSem.Release(true) == true)
+    if (System::Services::inputSem.Release() == true)
         System::Services::abortInput = true;
 
-    if (System::Services::processDataSem.Release(true) == true)
+    if (System::Services::processDataSem.Release() == true)
         System::Services::abortProcessData = true;
 
-    if (System::Services::outputSem.Release(true) == true)
+    if (System::Services::outputSem.Release() == true)
         System::Services::abortOutput = true;
 
     pthread_exit(nullptr);

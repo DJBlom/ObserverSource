@@ -8,21 +8,19 @@
 #include <BinarySemaphore.h>
 
 
-[[nodiscard]] bool Api::BinarySemaphore::Acquire(const bool& acquire) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::Acquire() noexcept
 {
     bool isAcquired{false};
-    if (acquire == true)
-        isAcquired = !static_cast<bool> (sem_wait(&this->semaphore));
+    isAcquired = !static_cast<bool> (sem_wait(&this->semaphore));
 
     return isAcquired;
 }
 
 
-[[nodiscard]] bool Api::BinarySemaphore::Release(const bool& release) noexcept
+[[nodiscard]] bool Api::BinarySemaphore::Release() noexcept
 {
     bool isReleased{false};
-    if (release == true)
-        isReleased = !static_cast<bool> (sem_post(&this->semaphore));
+    isReleased = !static_cast<bool> (sem_post(&this->semaphore));
 
     return isReleased;
 }

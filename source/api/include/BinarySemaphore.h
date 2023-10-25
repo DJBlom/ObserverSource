@@ -26,8 +26,8 @@ namespace Api {
                 sem_destroy(&this->semaphore);
             }
 
-            [[nodiscard]] virtual bool Acquire(const bool& acquire) noexcept;
-            [[nodiscard]] virtual bool Release(const bool& release) noexcept;
+            [[nodiscard]] virtual bool Acquire() noexcept;
+            [[nodiscard]] virtual bool Release() noexcept;
 
         private:
             sem_t semaphore{0};
