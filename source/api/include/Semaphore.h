@@ -12,8 +12,8 @@ namespace Interface {
     class Semaphore {
         public:
             virtual ~Semaphore() = default;
-            [[nodiscard]] virtual bool Acquire() = 0;
-            [[nodiscard]] virtual bool Release() = 0;
+            [[nodiscard]] virtual bool Acquire(const bool& acquire) = 0;
+            [[nodiscard]] virtual bool Release(const bool& release) = 0;
     };
 }
 #endif

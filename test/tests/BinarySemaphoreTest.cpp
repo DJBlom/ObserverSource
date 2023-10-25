@@ -36,13 +36,27 @@ TEST_GROUP(BinarySemaphoreTest)
 };
 
 
-TEST(BinarySemaphoreTest, ReleaseTheSemaphore)
+TEST(BinarySemaphoreTest, ReleaseTheSemaphoreSuccessfully)
 {
-    CHECK_EQUAL(expectedReturn, binSem.Release());
+    CHECK_EQUAL(expectedReturn, binSem.Release(true));
 }
 
 
-TEST(BinarySemaphoreTest, AcquireTheSemaphore)
+TEST(BinarySemaphoreTest, AcquireTheSemaphoreSuccessfully)
 {
-    CHECK_EQUAL(expectedReturn, binSem.Acquire());
+    CHECK_EQUAL(expectedReturn, binSem.Acquire(true));
+}
+
+
+TEST(BinarySemaphoreTest, ReleaseTheSemaphoreUnsuccessfully)
+{
+    expectedReturn = false;
+    CHECK_EQUAL(expectedReturn, binSem.Release(false));
+}
+
+
+TEST(BinarySemaphoreTest, AcquireTheSemaphoreUnsuccessfully)
+{
+    expectedReturn = false;
+    CHECK_EQUAL(expectedReturn, binSem.Acquire(false));
 }

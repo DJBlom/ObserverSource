@@ -14,7 +14,7 @@ namespace Api {
         public:
             BinarySemaphore()
             {
-                if (sem_init(&this->semaphore, 0, 1) != STATUS::OK)
+                if (sem_init(&this->semaphore, INIT::P_SHARED, INIT::VALUE) != STATUS::OK)
                     throw Api::Exception::SEM;
             }
             BinarySemaphore(const BinarySemaphore&) = default;
@@ -26,13 +26,17 @@ namespace Api {
                 sem_destroy(&this->semaphore);
             }
 
-            [[nodiscard]] virtual bool Acquire() noexcept;
-            [[nodiscard]] virtual bool Release() noexcept;
+            [[nodiscard]] virtual bool Acquire(const bool& acquire) noexcept;
+            [[nodiscard]] virtual bool Release(const bool& release) noexcept;
 
         private:
             sem_t semaphore{0};
             enum STATUS {
                 OK
+            };
+            enum INIT {
+                P_SHARED = 0,
+                VALUE = 1
             };
     };
 }
