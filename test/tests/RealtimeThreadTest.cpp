@@ -48,6 +48,8 @@ TEST_GROUP(RealtimeThreadTest)
 TEST(RealtimeThreadTest, VerifyTheThread)
 {
     CHECK_EQUAL(expectedReturn, sequencer.Start(&System::Services::Sequencer));
+
+    expectedReturn = false;
     CHECK_EQUAL(expectedReturn, input.Start(&System::Services::Input));
     CHECK_EQUAL(expectedReturn, processData.Start(&System::Services::ProcessData));
     CHECK_EQUAL(expectedReturn, output.Start(&System::Services::Output));
@@ -59,7 +61,10 @@ TEST(RealtimeThreadTest, VerifyTheThread)
 
     CHECK_EQUAL(expectedReturn, System::Services::Abort(true));
 
+    expectedReturn = true;
     CHECK_EQUAL(expectedReturn, sequencer.Stop());
+
+    expectedReturn = false;
     CHECK_EQUAL(expectedReturn, input.Stop());
     CHECK_EQUAL(expectedReturn, processData.Stop());
     CHECK_EQUAL(expectedReturn, output.Stop());
