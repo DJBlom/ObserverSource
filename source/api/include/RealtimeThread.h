@@ -20,7 +20,7 @@ namespace Api {
             RealtimeThread() = delete;
             RealtimeThread(const std::size_t& core, const int& priority)
             {
-                this->threadPriority = sched_get_priority_max(SCHED_FIFO);
+                this->threadPriority = sched_get_priority_max(this->policy);
                 if (priority > this->threadPriority)
                     throw Api::Exception::THREAD;
 
@@ -30,10 +30,10 @@ namespace Api {
                 if (pthread_attr_init(&this->attribute) != STATUS::OK)
                     throw Api::Exception::THREAD;
 
-                if (pthread_attr_setinheritsched(&this->attribute, PTHREAD_EXPLICIT_SCHED) != STATUS::OK)
+                if (pthread_attr_setinheritsched(&this->attribute, this->inheritSched) != STATUS::OK)
                     throw Api::Exception::THREAD;
 
-                if (pthread_attr_setschedpolicy(&attribute, SCHED_FIFO) != STATUS::OK)
+                if (pthread_attr_setschedpolicy(&this->attribute, this->policy) != STATUS::OK)
                     throw Api::Exception::THREAD;
 
                 CPU_ZERO(&this->cpuSet);
@@ -61,6 +61,7 @@ namespace Api {
             cpu_set_t cpuSet;
             pthread_t thread;
             pthread_attr_t attribute;
+            int inheritSched{PTHREAD_EXPLICIT_SCHED};
             int policy{SCHED_FIFO};
             int threadPriority{0};
             enum STATUS {

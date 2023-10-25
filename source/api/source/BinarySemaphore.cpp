@@ -11,8 +11,7 @@
 [[nodiscard]] bool Api::BinarySemaphore::Acquire() noexcept
 {
     bool isAcquired{false};
-    if (sem_wait(&this->semaphore) == 0)
-        isAcquired = true;
+    isAcquired = !static_cast<bool> (sem_wait(&this->semaphore));
 
     return isAcquired;
 }
@@ -21,8 +20,7 @@
 [[nodiscard]] bool Api::BinarySemaphore::Release() noexcept
 {
     bool isReleased{false};
-    if (sem_post(&this->semaphore) == 0)
-        isReleased = true;
+    isReleased = !static_cast<bool> (sem_post(&this->semaphore));
 
     return isReleased;
 }

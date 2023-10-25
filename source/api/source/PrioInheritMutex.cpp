@@ -11,8 +11,7 @@
 [[nodiscard]] bool Api::PrioInheritMutex::Lock() noexcept
 {
     bool isLocked{false};
-    if (pthread_mutex_lock(&this->mutex) == 0)
-        isLocked = true;
+    isLocked = !static_cast<bool> (pthread_mutex_lock(&this->mutex));
 
     return isLocked;
 }
@@ -21,8 +20,7 @@
 [[nodiscard]] bool Api::PrioInheritMutex::Unlock() noexcept
 {
     bool isUnlocked{false};
-    if (pthread_mutex_unlock(&this->mutex) == 0)
-        isUnlocked = true;
+    isUnlocked = !static_cast<bool> (pthread_mutex_unlock(&this->mutex));
 
     return isUnlocked;
 }

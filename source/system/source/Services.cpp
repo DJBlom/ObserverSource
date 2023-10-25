@@ -13,12 +13,12 @@ void* System::Services::Input(void*)
     int num{0};
     while (!System::Services::abortInput)
     {
-        if (System::Services::inputSem.Acquire() == true)
-        {
-            if (num == 120)
-                System::Services::abortSystem = true;
-            syslog(LOG_CRIT, "Data Input on core: %d for the %d cycle\n", sched_getcpu(), num++);
-        }
+        if (System::Services::inputSem.Acquire() == false)
+            break;
+
+        // Business logic goes here
+
+        syslog(LOG_CRIT, "Data Input on core: %d for the %d cycle\n", sched_getcpu(), num++);
     }
 
     pthread_exit(nullptr);
@@ -30,8 +30,12 @@ void* System::Services::ProcessData(void*)
     int num{0};
     while (!System::Services::abortProcessData)
     {
-        if (System::Services::processDataSem.Acquire() == true)
-            syslog(LOG_CRIT, "Data Process on core: %d for the %d cycle\n", sched_getcpu(), num++);
+        if (System::Services::processDataSem.Acquire() == false)
+            break;
+
+        // Business logic goes here
+
+        syslog(LOG_CRIT, "Data Process on core: %d for the %d cycle\n", sched_getcpu(), num++);
     }
 
     pthread_exit(nullptr);
@@ -43,8 +47,12 @@ void* System::Services::Output(void*)
     int num{0};
     while (!System::Services::abortOutput)
     {
-        if (System::Services::outputSem.Acquire() == true)
-            syslog(LOG_CRIT, "Data Output on core: %d for the %d cycle\n", sched_getcpu(), num++);
+        if (System::Services::outputSem.Acquire() == false)
+            break;
+
+        // Business logic goes here
+
+        syslog(LOG_CRIT, "Data Output on core: %d for the %d cycle\n", sched_getcpu(), num++);
     }
 
     pthread_exit(nullptr);
@@ -54,47 +62,29 @@ void* System::Services::Output(void*)
 void* System::Services::Sequencer(void*)
 {
     int executionCount{0};
-    while (!System::Services::abortSystem)
+    bool synch{true};
+    while (!System::Services::abortSystem && synch)
     {
         std::this_thread::sleep_for(std::chrono::nanoseconds(10000000));
         executionCount++;
         if ((executionCount % 2) == 0)
-        {
-            if (System::Services::inputSem.Release() == false)
-                break;
-        }
+            synch = System::Services::inputSem.Release();
 
         if ((executionCount % 10) == 0)
-        {
-            if (System::Services::processDataSem.Release() == false)
-                break;
-        }
+            synch = System::Services::processDataSem.Release();
 
         if ((executionCount % 20) == 0)
-        {
-            if (System::Services::outputSem.Release() == false)
-                break;
-        }
+            synch = System::Services::outputSem.Release();
     }
 
-    if (System::Services::inputSem.Release() == false)
-    {
-        pthread_exit(nullptr);
-    }
+    if (System::Services::inputSem.Release() == true)
+        System::Services::abortInput = true;
 
-    if (System::Services::processDataSem.Release() == false)
-    {
-        pthread_exit(nullptr);
-    }
+    if (System::Services::processDataSem.Release() == true)
+        System::Services::abortProcessData = true;
 
-    if (System::Services::outputSem.Release() == false)
-    {
-        pthread_exit(nullptr);
-    }
-
-    System::Services::abortInput = true;
-    System::Services::abortProcessData = true;
-    System::Services::abortOutput = true;
+    if (System::Services::outputSem.Release() == true)
+        System::Services::abortOutput = true;
 
     pthread_exit(nullptr);
 }
@@ -102,8 +92,7 @@ void* System::Services::Sequencer(void*)
 
 [[nodiscard]] bool System::Services::Abort(const bool& abort)
 {
-    if (abort == true)
-        System::Services::abortSystem = abort;
+    System::Services::abortSystem = abort;
 
     return System::Services::abortSystem;
 }

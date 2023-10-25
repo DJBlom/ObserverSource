@@ -47,22 +47,20 @@ int main(void)
     if (output.Start(&System::Services::Output) == false)
         std::cout << "Failed to create output\n";
 
-    syslog(LOG_CRIT, "Finished Creating\n");
+    if (System::Services::Abort(true) == true)
+    {
+        if (sequencer.Stop() == false)
+            std::cout << "Failed to join sequencer\n";
 
-//    if (System::Services::Abort(true) == false)
-//        std::cout << "Failed to abort system\n";
+        if (input.Stop() == false)
+            std::cout << "Failed to join input\n";
 
-    if (sequencer.Stop() == false)
-        std::cout << "Failed to join sequencer\n";
+        if (processData.Stop() == false)
+            std::cout << "Failed to join process data\n";
 
-    if (input.Stop() == false)
-        std::cout << "Failed to join input\n";
-
-    if (processData.Stop() == false)
-        std::cout << "Failed to join process data\n";
-
-    if (output.Stop() == false)
-        std::cout << "Failed to join output\n";
+        if (output.Stop() == false)
+            std::cout << "Failed to join output\n";
+    }
 
     syslog(LOG_CRIT, "System Shutdown\n");
 

@@ -10,6 +10,7 @@
 
 #include <iostream>
 
+#include <Services.h>
 #include <RealtimeThread.h>
 extern "C"
 {
@@ -30,7 +31,10 @@ extern "C"
 TEST_GROUP(RealtimeThreadTest)
 {
     bool expectedReturn{true};
-    Api::RealtimeThread rtThread{1, 99};
+    Api::RealtimeThread sequencer{1, 99};
+    Api::RealtimeThread input{2, 98};
+    Api::RealtimeThread processData{2, 97};
+    Api::RealtimeThread output{3, 96};
     void setup()
     {
     }
@@ -41,21 +45,22 @@ TEST_GROUP(RealtimeThreadTest)
 };
 
 
-void* Service(void*)
+TEST(RealtimeThreadTest, VerifyTheThread)
 {
-    std::cout << "Worked\n";
-    pthread_exit(nullptr);
-}
+    CHECK_EQUAL(expectedReturn, sequencer.Start(&System::Services::Sequencer));
+    CHECK_EQUAL(expectedReturn, input.Start(&System::Services::Input));
+    CHECK_EQUAL(expectedReturn, processData.Start(&System::Services::ProcessData));
+    CHECK_EQUAL(expectedReturn, output.Start(&System::Services::Output));
 
+    for (long i = 0; i < 6000000000; i++)
+    {
 
-TEST(RealtimeThreadTest, StartTheThread)
-{
-    CHECK_EQUAL(expectedReturn, rtThread.Start(Service));
-}
+    }
 
+    CHECK_EQUAL(expectedReturn, System::Services::Abort(true));
 
-TEST(RealtimeThreadTest, StopTheThread)
-{
-    CHECK_EQUAL(expectedReturn, rtThread.Start(Service));
-    CHECK_EQUAL(expectedReturn, rtThread.Stop());
+    CHECK_EQUAL(expectedReturn, sequencer.Stop());
+    CHECK_EQUAL(expectedReturn, input.Stop());
+    CHECK_EQUAL(expectedReturn, processData.Stop());
+    CHECK_EQUAL(expectedReturn, output.Stop());
 }

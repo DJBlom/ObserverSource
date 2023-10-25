@@ -5,17 +5,14 @@
  *
  * Note:
  ******************************************************************************/
-#ifndef _SCHED_H_
-#define _SCHED_H_
-#include <stdio.h>
+#ifndef _SCHEDULER_H_
+#define _SCHEDULER_H_
 #include <sched.h>
-#include <semaphore.h>
 namespace Interface {
-    class Sched {
+    class Scheduler {
         public:
-            virtual ~Sched() = default;
-            [[nodiscard]] virtual int PriorityGet(const int&) = 0;
-            [[nodiscard]] virtual bool SchedulerSet(const pid_t&) = 0;
+            virtual ~Scheduler() = default;
+            [[nodiscard]] virtual bool Which() = 0;
     };
 }
 #endif

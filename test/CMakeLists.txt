@@ -17,12 +17,13 @@ set(TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/tests/ControlTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/BinarySemaphoreTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/RealtimeThreadTest.cpp
+    ${PROJECT_SOURCE_DIR}/tests/PrioInheritMutexTest.cpp
     ${PROJECT_SOURCE_DIR}/mocks/source/
 )
 
 set(PROJECT_SOURCES
     ${PROJECT_SOURCE_DIR}/../source/system/source/Control.cpp
-    ${PROJECT_SOURCE_DIR}/../source/system/source/Architecture.cpp
+    ${PROJECT_SOURCE_DIR}/../source/system/source/Services.cpp
     ${PROJECT_SOURCE_DIR}/../source/api/source/BinarySemaphore.cpp
     ${PROJECT_SOURCE_DIR}/../source/api/source/RealtimeThread.cpp
     ${PROJECT_SOURCE_DIR}/../source/api/source/PrioInheritMutex.cpp
