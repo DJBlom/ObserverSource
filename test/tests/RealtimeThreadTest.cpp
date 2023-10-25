@@ -45,27 +45,48 @@ TEST_GROUP(RealtimeThreadTest)
 };
 
 
-TEST(RealtimeThreadTest, VerifyTheThread)
+TEST(RealtimeThreadTest, VerifyTheSequencer)
 {
     CHECK_EQUAL(expectedReturn, sequencer.Start(&System::Services::Sequencer));
+    CHECK_EQUAL(expectedReturn, System::Services::Abort(true));
 
-    expectedReturn = false;
+    CHECK_EQUAL(expectedReturn, sequencer.Stop());
+
     CHECK_EQUAL(expectedReturn, input.Start(&System::Services::Input));
-    CHECK_EQUAL(expectedReturn, processData.Start(&System::Services::ProcessData));
-    CHECK_EQUAL(expectedReturn, output.Start(&System::Services::Output));
+}
 
-    for (long i = 0; i < 6000000000; i++)
-    {
 
-    }
+TEST(RealtimeThreadTest, VerifyTheInputThread)
+{
+    CHECK_EQUAL(expectedReturn, sequencer.Start(&System::Services::Sequencer));
+    CHECK_EQUAL(expectedReturn, input.Start(&System::Services::Input));
 
     CHECK_EQUAL(expectedReturn, System::Services::Abort(true));
 
-    expectedReturn = true;
     CHECK_EQUAL(expectedReturn, sequencer.Stop());
-
-    expectedReturn = false;
     CHECK_EQUAL(expectedReturn, input.Stop());
+}
+
+
+TEST(RealtimeThreadTest, VerifyTheProcessDataThread)
+{
+    CHECK_EQUAL(expectedReturn, sequencer.Start(&System::Services::Sequencer));
+    CHECK_EQUAL(expectedReturn, processData.Start(&System::Services::ProcessData));
+
+    CHECK_EQUAL(expectedReturn, System::Services::Abort(true));
+
+    CHECK_EQUAL(expectedReturn, sequencer.Stop());
     CHECK_EQUAL(expectedReturn, processData.Stop());
+}
+
+
+TEST(RealtimeThreadTest, VerifyTheOutputThread)
+{
+    CHECK_EQUAL(expectedReturn, sequencer.Start(&System::Services::Sequencer));
+    CHECK_EQUAL(expectedReturn, output.Start(&System::Services::Output));
+
+    CHECK_EQUAL(expectedReturn, System::Services::Abort(true));
+
+    CHECK_EQUAL(expectedReturn, sequencer.Stop());
     CHECK_EQUAL(expectedReturn, output.Stop());
 }
