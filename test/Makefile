@@ -20,6 +20,7 @@ SRC_DIRS :=\
 INCLUDE_DIRS :=\
 	$(CPPUTEST_HOME)/include\
 	$(TEST_DIR)/mocks/include\
+	$(PROJECT_DIR)/source/ \
 	$(PROJECT_DIR)/source/features/include\
 	$(PROJECT_DIR)/source/system/include\
 	$(PROJECT_DIR)/source/api/include\

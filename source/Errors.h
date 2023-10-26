@@ -5,13 +5,11 @@
  *
  * Note:
  ******************************************************************************/
-#ifndef _EXCEPTION_H_
-#define _EXCEPTION_H_
-namespace Api {
-    enum class Exception {
-        SEM = 1,
-        MUTEX = 2,
-        THREAD= 3,
+#ifndef _ERRORS_H_
+#define _ERRORS_H_
+namespace System {
+    enum class Errors {
+        construction = 1
     };
 }
 #endif

@@ -7,7 +7,7 @@
  ******************************************************************************/
 #ifndef _BINARY_SEMAPHORE_H_
 #define _BINARY_SEMAPHORE_H_
-#include <Exception.h>
+#include <Errors.h>
 #include <Semaphore.h>
 namespace Api {
     class BinarySemaphore : public Interface::Semaphore {

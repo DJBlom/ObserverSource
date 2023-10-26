@@ -11,13 +11,13 @@
 Api::PrioInheritMutex::PrioInheritMutex()
 {
     if (pthread_mutexattr_init(&this->attribute) != status::ok) //LCOV_EXCL_START
-        throw Api::Exception::MUTEX;
+        throw System::Errors::construction;
 
     if (pthread_mutexattr_setprotocol(&this->attribute, PTHREAD_PRIO_INHERIT) != status::ok)
-        throw Api::Exception::MUTEX;
+        throw System::Errors::construction;
 
     if (pthread_mutex_init(&this->mutex, &this->attribute) != status::ok)
-        throw Api::Exception::MUTEX;
+        throw System::Errors::construction;
     //LCOV_EXCL_STOP
 }
 

@@ -12,28 +12,28 @@ Api::RealtimeThread::RealtimeThread(const std::size_t& core, const int& priority
 {
     this->threadPriority = sched_get_priority_max(this->policy);
     if (priority > this->threadPriority) //LCOV_EXCL_START
-        throw Api::Exception::THREAD;
+        throw System::Errors::construction;
 
-    if (core > Config::systemMaxCores)
-        throw Api::Exception::THREAD;
+    if (core > cores::max)
+        throw System::Errors::construction;
 
     if (pthread_attr_init(&this->attribute) != status::ok)
-        throw Api::Exception::THREAD;
+        throw System::Errors::construction;
 
     if (pthread_attr_setinheritsched(&this->attribute, this->inheritSched) != status::ok)
-        throw Api::Exception::THREAD;
+        throw System::Errors::construction;
 
     if (pthread_attr_setschedpolicy(&this->attribute, this->policy) != status::ok)
-        throw Api::Exception::THREAD;
+        throw System::Errors::construction;
 
     CPU_ZERO(&this->cpuSet);
     CPU_SET(core, &this->cpuSet);
     if (pthread_attr_setaffinity_np(&this->attribute, sizeof(cpu_set_t), &this->cpuSet) != status::ok)
-        throw Api::Exception::THREAD;
+        throw System::Errors::construction;
 
     struct sched_param param{priority};
     if (pthread_attr_setschedparam(&this->attribute, &param) != status::ok)
-        throw Api::Exception::THREAD;
+        throw System::Errors::construction;
     //LCOV_EXCL_STOP
 }
 

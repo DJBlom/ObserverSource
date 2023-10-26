@@ -11,7 +11,7 @@
 Api::BinarySemaphore::BinarySemaphore()
 {
     if (sem_init(&this->semaphore, init::p_shared, init::value) != status::ok) //LCOV_EXCL_START
-        throw Api::Exception::SEM;
+        throw System::Errors::construction;
     //LCOV_EXCL_STOP
 }
 

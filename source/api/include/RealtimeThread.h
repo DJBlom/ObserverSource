@@ -9,13 +9,9 @@
 #define _REALTIME_THREAD_H_
 #include <cstddef>
 #include <Thread.h>
-#include <Exception.h>
-namespace Config {
-    constexpr int systemMaxCores{4};
-}
-
+#include <Errors.h>
 namespace Api {
-    class RealtimeThread {
+    class RealtimeThread : public Interface::Thread {
         public:
             RealtimeThread() = delete;
             RealtimeThread(const std::size_t& core, const int& priority);
@@ -29,14 +25,17 @@ namespace Api {
             [[nodiscard]] virtual bool Stop() noexcept;
 
         private:
-            cpu_set_t cpuSet;
-            pthread_t thread;
+            cpu_set_t cpuSet{0};
+            pthread_t thread{0};
             pthread_attr_t attribute;
             int inheritSched{PTHREAD_EXPLICIT_SCHED};
             int policy{SCHED_FIFO};
             int threadPriority{0};
             enum status {
                 ok
+            };
+            enum cores {
+                max = 4
             };
     };
 }

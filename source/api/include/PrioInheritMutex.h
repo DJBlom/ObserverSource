@@ -8,9 +8,9 @@
 #ifndef _PRIO_INHERIT_MUTEX_H_
 #define _PRIO_INHERIT_MUTEX_H_
 #include <Mutex.h>
-#include <Exception.h>
+#include <Errors.h>
 namespace Api {
-    class PrioInheritMutex : Interface::Mutex {
+    class PrioInheritMutex : public Interface::Mutex {
         public:
             PrioInheritMutex();
             PrioInheritMutex(PrioInheritMutex&&) = default;

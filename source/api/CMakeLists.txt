@@ -18,12 +18,13 @@ if(${FILES_IN_DIR} GREATER 0)
         ${PROJECT_SOURCE_DIR}/source/RealtimeThread.cpp
     )
 
-    target_include_directories(api PRIVATE
+    target_include_directories(api
+        PRIVATE
         ${PROJECT_SOURCE_DIR}/include/
+        PUBLIC
+        ${PROJECT_SOURCE_DIR}/../
+        # ${PROJECT_SOURCE_DIR}/../errors/include/
     )
 else ()
-    message(STATUS "There are no files in, source/features/include or source/features/source.")
+    message(STATUS "There are no files in, source/api/source.")
 endif()
-
-
-
