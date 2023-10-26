@@ -62,29 +62,24 @@ void* System::Services::Output(void*)
 void* System::Services::Sequencer(void*)
 {
     int executionCount{0};
-    bool synch{true};
-    while (!System::Services::abortSystem && synch)
+    while (!System::Services::abortSystem)
     {
-        std::this_thread::sleep_for(std::chrono::nanoseconds(10000000));
+        std::this_thread::sleep_for(std::chrono::nanoseconds(SLEEP::MS_1));
         executionCount++;
-        if ((executionCount % 2) == 0)
-            synch = System::Services::inputSem.Release();
+        if (System::Services::InputReleased(executionCount) == false)
+            break;
 
-        if ((executionCount % 10) == 0)
-            synch = System::Services::processDataSem.Release();
+        if (System::Services::ProcessDataReleased(executionCount) == false)
+            break;
 
-        if ((executionCount % 20) == 0)
-            synch = System::Services::outputSem.Release();
+        if (System::Services::OutputReleased(executionCount) == false)
+            break;
     }
 
-    if (System::Services::inputSem.Release() == true)
-        System::Services::abortInput = true;
 
-    if (System::Services::processDataSem.Release() == true)
-        System::Services::abortProcessData = true;
+    if (EnsureThreadAbort() == true)
+        syslog(LOG_CRIT, "SYSTEM INFO: Preparing To Shutdown. Last Thread Cycle.");
 
-    if (System::Services::outputSem.Release() == true)
-        System::Services::abortOutput = true;
 
     pthread_exit(nullptr);
 }
@@ -95,4 +90,50 @@ void* System::Services::Sequencer(void*)
     System::Services::abortSystem = abort;
 
     return System::Services::abortSystem;
+}
+
+
+[[nodiscard]] bool System::Services::InputReleased(const int& count)
+{
+    bool isReleased{true};
+    if ((count % Hz::FIFTY) == STATUS::OK)
+        isReleased = System::Services::inputSem.Release();
+
+    return isReleased;
+}
+
+
+[[nodiscard]] bool System::Services::ProcessDataReleased(const int& count)
+{
+    bool isReleased{true};
+    if ((count % Hz::TEN) == STATUS::OK)
+        isReleased = System::Services::processDataSem.Release();
+
+    return isReleased;
+}
+
+
+[[nodiscard]] bool System::Services::OutputReleased(const int& count)
+{
+    bool isReleased{true};
+    if ((count % Hz::FIVE) == STATUS::OK)
+        isReleased = System::Services::outputSem.Release();
+
+    return isReleased;
+}
+
+
+[[nodiscard]] bool System::Services::EnsureThreadAbort()
+{
+    bool isAborted{true};
+    if (System::Services::inputSem.Release() == true)
+        System::Services::abortInput = isAborted;
+
+    if (System::Services::processDataSem.Release() == true)
+        System::Services::abortProcessData = isAborted;
+
+    if (System::Services::outputSem.Release() == true)
+        System::Services::abortOutput = isAborted;
+
+    return isAborted;
 }

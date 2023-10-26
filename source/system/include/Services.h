@@ -29,6 +29,12 @@ namespace System {
             [[nodiscard]] static bool Abort(const bool& abort);
 
         private:
+            [[nodiscard]] static bool InputReleased(const int& count);
+            [[nodiscard]] static bool ProcessDataReleased(const int& count);
+            [[nodiscard]] static bool OutputReleased(const int& count);
+            [[nodiscard]] static bool EnsureThreadAbort();
+
+        private:
             inline static bool abortSystem{false};
             inline static bool abortInput{false};
             inline static bool abortProcessData{false};
@@ -38,6 +44,19 @@ namespace System {
             inline static Api::BinarySemaphore processDataSem;
             inline static Api::BinarySemaphore outputSem;
             inline static Api::BinarySemaphore sequencerSem;
+            enum Hz {
+                FIFTY = 2,
+                TEN = 10,
+                FIVE = 20
+            };
+
+            enum SLEEP {
+                MS_1 = 10000000
+            };
+
+            enum STATUS {
+                OK = 0
+            };
     };
 }
 #endif
