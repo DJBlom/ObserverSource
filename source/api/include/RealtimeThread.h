@@ -18,41 +18,12 @@ namespace Api {
     class RealtimeThread {
         public:
             RealtimeThread() = delete;
-            RealtimeThread(const std::size_t& core, const int& priority)
-            {
-                this->threadPriority = sched_get_priority_max(this->policy);
-                if (priority > this->threadPriority)
-                    throw Api::Exception::THREAD;
-
-                if (core > Config::systemMaxCores)
-                    throw Api::Exception::THREAD;
-
-                if (pthread_attr_init(&this->attribute) != STATUS::OK)
-                    throw Api::Exception::THREAD;
-
-                if (pthread_attr_setinheritsched(&this->attribute, this->inheritSched) != STATUS::OK)
-                    throw Api::Exception::THREAD;
-
-                if (pthread_attr_setschedpolicy(&this->attribute, this->policy) != STATUS::OK)
-                    throw Api::Exception::THREAD;
-
-                CPU_ZERO(&this->cpuSet);
-                CPU_SET(core, &this->cpuSet);
-                if (pthread_attr_setaffinity_np(&this->attribute, sizeof(cpu_set_t), &this->cpuSet) != STATUS::OK)
-                    throw Api::Exception::THREAD;
-
-                struct sched_param param{priority};
-                if (pthread_attr_setschedparam(&this->attribute, &param) != STATUS::OK)
-                    throw Api::Exception::THREAD;
-            }
-            RealtimeThread(const RealtimeThread&) = default;
-            RealtimeThread(RealtimeThread&&) = default;
-            RealtimeThread& operator= (const RealtimeThread&) = default;
-            RealtimeThread& operator= (RealtimeThread&&) = default;
-            virtual ~RealtimeThread()
-            {
-                pthread_attr_destroy(&this->attribute);
-            }
+            RealtimeThread(const std::size_t& core, const int& priority);
+            RealtimeThread(const RealtimeThread&) = delete;
+            RealtimeThread(RealtimeThread&&) = delete;
+            RealtimeThread& operator= (const RealtimeThread&) = delete;
+            RealtimeThread& operator= (RealtimeThread&&) = delete;
+            virtual ~RealtimeThread();
 
             [[nodiscard]] virtual bool Start(void* (*serviceFunction)(void*)) noexcept;
             [[nodiscard]] virtual bool Stop() noexcept;
@@ -64,8 +35,8 @@ namespace Api {
             int inheritSched{PTHREAD_EXPLICIT_SCHED};
             int policy{SCHED_FIFO};
             int threadPriority{0};
-            enum STATUS {
-                OK
+            enum status {
+                ok
             };
     };
 }

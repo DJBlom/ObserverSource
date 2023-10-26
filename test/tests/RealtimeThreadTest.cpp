@@ -11,6 +11,7 @@
 #include <iostream>
 #include <Services.h>
 #include <RealtimeThread.h>
+#include <Exception.h>
 extern "C"
 {
 
