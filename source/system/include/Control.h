@@ -7,27 +7,36 @@
  ******************************************************************************/
 #ifndef _CONTROL_H_
 #define _CONTROL_H_
-#include <sys/types.h>
-#include <thread>
-
+#include <sched.h>
+#include <Errors.h>
+#include <Services.h>
+#include <RealtimeThread.h>
 namespace System {
-    constexpr int policy{SCHED_FIFO};
+    constexpr int maxPriority{99};
     class Control {
         public:
             Control() = delete;
             explicit Control(const pid_t& pid);
-            Control(const Control&) = default;
-            Control(Control&&) = default;
-            Control& operator= (const Control&) = default;
-            Control& operator= (Control&&) = default;
+            Control(const Control&) = delete;
+            Control(Control&&) = delete;
+            Control& operator= (const Control&) = delete;
+            Control& operator= (Control&&) = delete;
             ~Control() = default;
 
-            [[nodiscard]] bool IsReady() noexcept;
             [[nodiscard]] bool Start() noexcept;
             [[nodiscard]] bool Shutdown() noexcept;
 
         private:
-            int mainpid{0};
+            int priority{System::maxPriority};
+            bool shutdown{false};
+            const int policy{SCHED_FIFO};
+            Api::RealtimeThread sequencer{1, this->priority - 1};
+            Api::RealtimeThread input{2, this->priority - 2};
+            Api::RealtimeThread processData{2, this->priority - 3};
+            Api::RealtimeThread output{3, this->priority - 4};
+            enum status {
+                ok = 0
+            };
     };
 }
 #endif

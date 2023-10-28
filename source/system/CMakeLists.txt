@@ -31,7 +31,7 @@ if(${FILES_IN_DIR} GREATER 0)
         api
     )
 else ()
-    message(STATUS "There are no files in, source/system/include or source/system/source.")
+    message(STATUS "There are no files in, source/system/source.")
 endif()
 
 

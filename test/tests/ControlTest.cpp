@@ -17,7 +17,6 @@ extern "C"
 }
 
 
-
 /**********************************TEST LIST************************************
  * 1) Verify that the system is ready to begin operation (Done)
  * 2) Start the system up if it's ready (Done)
@@ -37,20 +36,13 @@ TEST_GROUP(ControlTest)
 };
 
 
-TEST(ControlTest, VerifyTheSystemIsReadyForOperation)
+TEST(ControlTest, SuccessfullyStartTheSystem)
 {
-    CHECK_EQUAL(true, control.IsReady());
-}
-
-
-TEST(ControlTest, IfTheSystemIsReadyStartIt)
-{
-    CHECK_EQUAL(true, control.IsReady());
     CHECK_EQUAL(true, control.Start());
 }
 
 
-TEST(ControlTest, ShutTheSystemDown)
+TEST(ControlTest, SuccessfullyShutdownTheSystem)
 {
     CHECK_EQUAL(true, control.Shutdown());
 }

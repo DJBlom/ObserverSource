@@ -12,8 +12,8 @@ namespace Interface {
     class Thread {
         public:
             virtual ~Thread() = default;
-            [[nodiscard]] virtual bool Start(void* (*serviceFunction)(void*)) = 0;
-            [[nodiscard]] virtual bool Stop() = 0;
+            [[nodiscard]] virtual bool Prepare(void* (*serviceFunction)(void*)) = 0;
+            [[nodiscard]] virtual bool Start() = 0;
     };
 }
 #endif

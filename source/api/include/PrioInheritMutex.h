@@ -26,7 +26,7 @@ namespace Api {
             pthread_mutex_t mutex;
             pthread_mutexattr_t attribute;
             enum status {
-                ok
+                ok = 0
             };
     };
 }

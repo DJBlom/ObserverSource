@@ -44,7 +44,7 @@ Api::RealtimeThread::~RealtimeThread()
 }
 
 
-[[nodiscard]] bool Api::RealtimeThread::Start(void* (*serviceFunction)(void*)) noexcept
+[[nodiscard]] bool Api::RealtimeThread::Prepare(void* (*serviceFunction)(void*)) noexcept
 {
     bool isStarted{false};
     isStarted = !static_cast<bool> (pthread_create(&this->thread, &this->attribute, serviceFunction, nullptr));
@@ -52,8 +52,7 @@ Api::RealtimeThread::~RealtimeThread()
     return isStarted;
 }
 
-
-[[nodiscard]] bool Api::RealtimeThread::Stop() noexcept
+[[nodiscard]] bool Api::RealtimeThread::Start() noexcept
 {
     bool isStopped{false};
     isStopped = !static_cast<bool> (pthread_join(this->thread, nullptr));

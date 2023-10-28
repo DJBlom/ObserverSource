@@ -15,8 +15,8 @@
 namespace System {
     class Services {
         public:
-            Services() = default;
-            Services(const Services&) = delete;
+            Services() = delete;
+            Services(const Services&) = default;
             Services(Services&&) = delete;
             Services& operator= (const Services&) = delete;
             Services& operator= (Services&&) = delete;

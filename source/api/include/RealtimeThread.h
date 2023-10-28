@@ -13,16 +13,16 @@
 namespace Api {
     class RealtimeThread : public Interface::Thread {
         public:
-            RealtimeThread() = delete;
+            RealtimeThread() = default;
             RealtimeThread(const std::size_t& core, const int& priority);
-            RealtimeThread(const RealtimeThread&) = delete;
+            RealtimeThread(const RealtimeThread&) = default;
             RealtimeThread(RealtimeThread&&) = delete;
-            RealtimeThread& operator= (const RealtimeThread&) = delete;
-            RealtimeThread& operator= (RealtimeThread&&) = delete;
+            RealtimeThread& operator= (const RealtimeThread&) = default;
+            RealtimeThread& operator= (RealtimeThread&&) = default;
             virtual ~RealtimeThread();
 
-            [[nodiscard]] virtual bool Start(void* (*serviceFunction)(void*)) noexcept;
-            [[nodiscard]] virtual bool Stop() noexcept;
+            [[nodiscard]] virtual bool Prepare(void* (*serviceFunction)(void*)) noexcept;
+            [[nodiscard]] virtual bool Start() noexcept;
 
         private:
             cpu_set_t cpuSet{0};
@@ -32,7 +32,7 @@ namespace Api {
             int policy{SCHED_FIFO};
             int threadPriority{0};
             enum status {
-                ok
+                ok = 0
             };
             enum cores {
                 max = 4

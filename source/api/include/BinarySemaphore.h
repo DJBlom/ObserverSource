@@ -25,7 +25,7 @@ namespace Api {
         private:
             sem_t semaphore{0};
             enum status {
-                ok
+                ok = 0
             };
             enum init {
                 p_shared = 0,
