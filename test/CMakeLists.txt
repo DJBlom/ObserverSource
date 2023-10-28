@@ -86,7 +86,7 @@ if(DEFINED ENV{CPPUTEST_HOME})
             POST_BUILD
             COMMENT "Running Code Coverage..."
             WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-            COMMAND ./${PROJECT_NAME}
+            COMMAND ./${PROJECT_NAME}l -xg ControlTest
         )
     else()
         add_custom_command(TARGET ${PROJECT_NAME}
@@ -95,7 +95,7 @@ if(DEFINED ENV{CPPUTEST_HOME})
             POST_BUILD
             COMMENT "Running Unit Tests..."
             WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-            COMMAND ./${PROJECT_NAME} -c -v
+            COMMAND ./${PROJECT_NAME} -c -v -xg ControlTest
         )
     endif()
 else()
