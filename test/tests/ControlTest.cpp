@@ -38,6 +38,7 @@ TEST_GROUP(ControlTest)
 
 TEST(ControlTest, SuccessfullyStartTheSystem)
 {
+    CHECK_EQUAL(true, control.Shutdown());
     CHECK_EQUAL(true, control.Start());
 }
 
