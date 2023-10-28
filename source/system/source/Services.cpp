@@ -79,7 +79,6 @@ void* System::Services::Sequencer(void*)
             break;
     }
 
-
     if (EnsureThreadAbort() == true)
         syslog(LOG_CRIT, "SYSTEM INFO: Preparing To Shutdown. Last Thread Cycle.");
     //LCOV_EXCL_STOP

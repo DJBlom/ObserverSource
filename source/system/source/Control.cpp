@@ -15,13 +15,13 @@ System::Control::Control(const pid_t& pid) //LCOV_EXCL_START
     param.sched_priority = this->priority;
     if (sched_setscheduler(pid, this->policy, &param) != status::ok)
         throw System::Errors::construction;
-    //LCOV_EXCL_STOP
 }
+//LCOV_EXCL_STOP
 
 
-[[nodiscard]] bool System::Control::Start() noexcept
+[[nodiscard]] bool System::Control::Start() noexcept //LCOV_EXCL_START
 {
-    if (this->sequencer.Prepare(&System::Services::Sequencer) == false) //LCOV_EXCL_START
+    if (this->sequencer.Prepare(&System::Services::Sequencer) == false)
         return false;
 
     if (this->input.Prepare(&System::Services::Input) == false)
@@ -44,10 +44,10 @@ System::Control::Control(const pid_t& pid) //LCOV_EXCL_START
 
     if (this->output.Start() == false)
         return false;
-    //LCOV_EXCL_STOP
 
     return true;
 }
+//LCOV_EXCL_STOP
 
 
 [[nodiscard]] bool System::Control::Shutdown() noexcept
