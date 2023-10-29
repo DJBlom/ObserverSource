@@ -13,6 +13,7 @@
 #include <thread>
 #include <syslog.h>
 namespace System {
+    using namespace std::literals::chrono_literals;
     class Services {
         public:
             Services() = delete;
@@ -44,18 +45,13 @@ namespace System {
             inline static Api::BinarySemaphore processDataSem;
             inline static Api::BinarySemaphore outputSem;
             inline static Api::BinarySemaphore sequencerSem;
+            enum STATUS {
+                OK = 0
+            };
             enum Hz {
                 FIFTY = 2,
                 TEN = 10,
                 FIVE = 20
-            };
-
-            enum SLEEP {
-                MS_1 = 10000000
-            };
-
-            enum STATUS {
-                OK = 0
             };
     };
 }

@@ -67,7 +67,7 @@ void* System::Services::Sequencer(void*)
     int executionCount{0};
     while (!System::Services::abortSystem) //LCOV_EXCL_START
     {
-        std::this_thread::sleep_for(std::chrono::nanoseconds(SLEEP::MS_1));
+        std::this_thread::sleep_for(std::chrono::nanoseconds(1ms));
         executionCount++;
         if (System::Services::InputReleased(executionCount) == false)
             break;
