@@ -8,6 +8,7 @@
 #ifndef _BINARY_SEMAPHORE_H_
 #define _BINARY_SEMAPHORE_H_
 #include <Errors.h>
+#include <semaphore.h>
 #include <Semaphore.h>
 namespace Api {
     class BinarySemaphore : public Interface::Semaphore {
@@ -19,8 +20,8 @@ namespace Api {
             BinarySemaphore& operator= (BinarySemaphore&&) = default;
             virtual ~BinarySemaphore();
 
-            [[nodiscard]] virtual bool Acquire() noexcept;
-            [[nodiscard]] virtual bool Release() noexcept;
+            [[nodiscard]] virtual bool Acquire() noexcept override;
+            [[nodiscard]] virtual bool Release() noexcept override;
 
         private:
             sem_t semaphore{0};

@@ -7,7 +7,6 @@
  ******************************************************************************/
 #ifndef _MUTEX_H_
 #define _MUTEX_H_
-#include <pthread.h>
 namespace Interface {
     class Mutex {
         public:

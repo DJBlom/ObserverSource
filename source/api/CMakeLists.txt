@@ -16,6 +16,7 @@ if(${FILES_IN_DIR} GREATER 0)
         ${PROJECT_SOURCE_DIR}/source/BinarySemaphore.cpp
         ${PROJECT_SOURCE_DIR}/source/PrioInheritMutex.cpp
         ${PROJECT_SOURCE_DIR}/source/RealtimeThread.cpp
+        #${PROJECT_SOURCE_DIR}/source/Device.cpp
     )
 
     target_include_directories(api
@@ -23,7 +24,6 @@ if(${FILES_IN_DIR} GREATER 0)
         ${PROJECT_SOURCE_DIR}/include/
         PUBLIC
         ${PROJECT_SOURCE_DIR}/../
-        # ${PROJECT_SOURCE_DIR}/../errors/include/
     )
 else ()
     message(STATUS "There are no files in, source/api/source.")

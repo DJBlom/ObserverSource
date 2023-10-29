@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: RealtimeThread implementation
+ * Contents: RealtimeThread definition
  * Author: Dawid Blom
  * Date: October 1, 2023
  *

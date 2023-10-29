@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: BinarySemaphore implementation
+ * Contents: BinarySemaphore definition
  * Author: Dawid Blom
  * Date: October 22, 2023
  *

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Contents: PrioInheritMute implementaion
+ * Contents: PrioInheritMute definition
  * Author: Dawid Blom
  * Date: October 22, 2023
  *
