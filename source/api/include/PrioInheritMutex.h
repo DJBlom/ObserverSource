@@ -7,8 +7,8 @@
  ******************************************************************************/
 #ifndef _PRIO_INHERIT_MUTEX_H_
 #define _PRIO_INHERIT_MUTEX_H_
-#include <Mutex.h>
 #include <Errors.h>
+#include <Mutex.h>
 namespace Api {
     class PrioInheritMutex : public Interface::Mutex {
         public:

@@ -24,6 +24,3 @@ if(${FILES_IN_DIR} GREATER 0)
 else ()
     message(STATUS "There are no files in, source/features/source.")
 endif()
-
-
-

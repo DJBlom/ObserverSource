@@ -8,8 +8,8 @@
 #ifndef _REALTIME_THREAD_H_
 #define _REALTIME_THREAD_H_
 #include <cstddef>
-#include <Thread.h>
 #include <Errors.h>
+#include <Thread.h>
 namespace Api {
     class RealtimeThread : public Interface::Thread {
         public:
