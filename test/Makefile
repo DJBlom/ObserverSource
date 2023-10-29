@@ -9,7 +9,7 @@
 PROJECT_DIR :=$(realpath ..)
 TEST_DIR :=$(realpath .)
 TEST_TARGET := UnitTests
-CPPUTEST_CXXFLAGS=-std=c++20
+CPPUTEST_CXXFLAGS=-std=c++23
 
 SRC_DIRS :=\
 	$(PROJECT_DIR)/source/features/source\

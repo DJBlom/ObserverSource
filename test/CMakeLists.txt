@@ -15,6 +15,7 @@ project(${PROJECT_NAME} LANGUAGES CXX C)
 
 set(TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/tests/ControlTest.cpp
+    ${PROJECT_SOURCE_DIR}/tests/DeviceTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/BinarySemaphoreTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/RealtimeThreadTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/PrioInheritMutexTest.cpp
