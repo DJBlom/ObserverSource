@@ -7,3 +7,7 @@ build/
 test/lib
 test/objs
 test/UnitTests
+
+# Ignore any .png files created
+.png
+test/*.png
