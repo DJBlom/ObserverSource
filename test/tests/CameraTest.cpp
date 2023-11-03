@@ -5,8 +5,14 @@
  *
  * Note: Refer to the TEST LIST for details on what this fixture tests.
  ******************************************************************************/
+#include <opencv2/opencv.hpp>
+
+//#include <VideoCamera.h>
+#include <CameraMock.h>
+
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
+
 
 
 
@@ -14,7 +20,6 @@ extern "C"
 {
 
 }
-
 
 
 /**********************************TEST LIST************************************
@@ -32,17 +37,30 @@ extern "C"
  ******************************************************************************/
 TEST_GROUP(CameraTest)
 {
+    Mock::CameraMock camera;
     void setup()
     {
     }
 
     void teardown()
     {
+        mock().clear();
     }
 };
 
 
-TEST(CameraTest, CreateTheCameraWithAPathToHardwareNodeAndFrameSize)
+TEST(CameraTest, TheCameraOpensTheDeviceFileOnConstructionAndIsReadyForStreaming)
 {
-    CHECK_EQUAL(1, 1);
+    mock().expectOneCall("IsOpened").andReturnValue(true);
+    CHECK_EQUAL(true, camera.IsOpened());
+
+    mock().checkExpectations();
+}
+
+
+TEST(CameraTest, CaptureVideoFrames)
+{
+    mock().expectOneCall("ReadFrame");
+    cv::Mat frame = camera.ReadFrame();
+    mock().checkExpectations();
 }

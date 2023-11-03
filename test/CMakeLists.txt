@@ -15,25 +15,26 @@ project(${PROJECT_NAME} LANGUAGES CXX C)
 
 set(TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/tests/ControlTest.cpp
-    ${PROJECT_SOURCE_DIR}/tests/DeviceTest.cpp
+    ${PROJECT_SOURCE_DIR}/tests/CameraTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/BinarySemaphoreTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/RealtimeThreadTest.cpp
     ${PROJECT_SOURCE_DIR}/tests/PrioInheritMutexTest.cpp
-    ${PROJECT_SOURCE_DIR}/mocks/source/
+    ${PROJECT_SOURCE_DIR}/mocks/source/CameraMock.cpp
 )
 
 set(PROJECT_SOURCES
-    ${PROJECT_SOURCE_DIR}/../source/system/source/Control.cpp
-    ${PROJECT_SOURCE_DIR}/../source/system/source/Services.cpp
-    ${PROJECT_SOURCE_DIR}/../source/api/source/BinarySemaphore.cpp
-    ${PROJECT_SOURCE_DIR}/../source/api/source/RealtimeThread.cpp
-    ${PROJECT_SOURCE_DIR}/../source/api/source/PrioInheritMutex.cpp
+    ${CMAKE_SOURCE_DIR}/source/system/source/Control.cpp
+    ${CMAKE_SOURCE_DIR}/source/system/source/Services.cpp
+    ${CMAKE_SOURCE_DIR}/source/api/source/BinarySemaphore.cpp
+    ${CMAKE_SOURCE_DIR}/source/api/source/RealtimeThread.cpp
+    ${CMAKE_SOURCE_DIR}/source/api/source/PrioInheritMutex.cpp
 )
 
 set(PROJECT_INCLUDES
-    ${PROJECT_SOURCE_DIR}/../source/
-    ${PROJECT_SOURCE_DIR}/../source/api/include
-    ${PROJECT_SOURCE_DIR}/../source/system/include
+    ${CMAKE_SOURCE_DIR}/source/
+    ${CMAKE_SOURCE_DIR}/source/api/include
+    ${CMAKE_SOURCE_DIR}/source/system/include
+    ${CMAKE_SOURCE_DIR}/source/thirdparty/include
 )
 
 set(CMAKE_C_STANDARD 11)
@@ -44,6 +45,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(DEFINED ENV{CPPUTEST_HOME})
+    find_package( OpenCV REQUIRED )
     add_compile_options(
         -Wall
         -Werror
@@ -56,13 +58,17 @@ if(DEFINED ENV{CPPUTEST_HOME})
         $<$<CONFIG:DEBUG>:-Og>
     )
 
-    include_directories(${PROJECT_NAME} INTERFACE
+    include_directories(${PROJECT_NAME}
+        INTERFACE
         $ENV{CPPUTEST_HOME}/include
+        PRIVATE
         ${PROJECT_SOURCE_DIR}/mocks/include
         ${PROJECT_INCLUDES}
+        ${OpenCV_INCLUDE_DIRS}
     )
 
-    link_directories(${PROJECT_NAME} INTERFACE
+    link_directories(${PROJECT_NAME}
+        INTERFACE
         $ENV{CPPUTEST_HOME}/lib
     )
 
@@ -78,6 +84,7 @@ if(DEFINED ENV{CPPUTEST_HOME})
         CppUTestExt
         pthread
         rt
+        ${OpenCV_LIBS}
     )
 
     if (CODE_COVERAGE)
