@@ -12,7 +12,6 @@ project(target-api VERSION 0.0.1 LANGUAGES CXX C)
 file(GLOB RESULT ${PROJECT_SOURCE_DIR}/source)
 list(LENGTH RESULT FILES_IN_DIR)
 if(${FILES_IN_DIR} GREATER 0)
-    find_package( OpenCV REQUIRED )
     add_library(api OBJECT
         ${PROJECT_SOURCE_DIR}/source/BinarySemaphore.cpp
         ${PROJECT_SOURCE_DIR}/source/PrioInheritMutex.cpp

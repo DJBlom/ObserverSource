@@ -13,7 +13,7 @@ file(GLOB RESULT ${PROJECT_SOURCE_DIR}/source)
 list(LENGTH RESULT FILES_IN_DIR)
 if(${FILES_IN_DIR} GREATER 0)
     find_package( OpenCV REQUIRED )
-    add_library(api OBJECT
+    add_library(thirdparty OBJECT
         ${PROJECT_SOURCE_DIR}/source/VideoCamera.cpp
     )
 
