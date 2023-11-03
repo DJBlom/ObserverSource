@@ -54,8 +54,9 @@ if(BUILD_PROJECT)
 
     target_include_directories(${PROJECT_NAME} PRIVATE
         ${CMAKE_SOURCE_DIR}/source/api/include/
-        ${CMAKE_SOURCE_DIR}/source/system/include/
         ${CMAKE_SOURCE_DIR}/source/features/include/
+        ${CMAKE_SOURCE_DIR}/source/system/include/
+        ${CMAKE_SOURCE_DIR}/source/thirdparty/include/
     )
 
     target_link_options(${PROJECT_NAME} PRIVATE
@@ -67,7 +68,7 @@ if(BUILD_PROJECT)
         add_subdirectory(${CMAKE_SOURCE_DIR}/source/api)
         target_link_libraries(${PROJECT_NAME} PRIVATE api)
     else()
-        message(STATUS "Directory source/system, does not exist")
+        message(STATUS "Directory source/api, does not exist")
     endif()
 
     if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/source/features)
@@ -82,6 +83,13 @@ if(BUILD_PROJECT)
         target_link_libraries(${PROJECT_NAME} PRIVATE system)
     else()
         message(STATUS "Directory source/system, does not exist")
+    endif()
+
+    if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/source/thirdparty)
+        add_subdirectory(${CMAKE_SOURCE_DIR}/source/thirdparty)
+        target_link_libraries(${PROJECT_NAME} PRIVATE thirdparty)
+    else()
+        message(STATUS "Directory source/thirdparty, does not exist")
     endif()
 
     if (EXISTS ${CMAKE_OBJDUMP})

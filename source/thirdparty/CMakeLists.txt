@@ -6,7 +6,7 @@
 # NOTE:
 ############################################################################
 cmake_minimum_required(VERSION 3.25)
-project(target-api VERSION 0.0.1 LANGUAGES CXX C)
+project(target-thirdparty VERSION 0.0.1 LANGUAGES CXX C)
 
 
 file(GLOB RESULT ${PROJECT_SOURCE_DIR}/source)
@@ -14,19 +14,20 @@ list(LENGTH RESULT FILES_IN_DIR)
 if(${FILES_IN_DIR} GREATER 0)
     find_package( OpenCV REQUIRED )
     add_library(api OBJECT
-        ${PROJECT_SOURCE_DIR}/source/BinarySemaphore.cpp
-        ${PROJECT_SOURCE_DIR}/source/PrioInheritMutex.cpp
-        ${PROJECT_SOURCE_DIR}/source/RealtimeThread.cpp
+        ${PROJECT_SOURCE_DIR}/source/VideoCamera.cpp
     )
 
-    target_include_directories(api
+    target_include_directories(thirdparty
         PRIVATE
         ${PROJECT_SOURCE_DIR}/include/
+        ${OpenCV_INCLUDE_DIRS}
         PUBLIC
         ${PROJECT_SOURCE_DIR}/../
     )
 
-    target_link_libraries(api)
+    target_link_libraries(thirdparty PRIVATE
+        ${OpenCV_LIBS}
+    )
 else ()
     message(STATUS "There are no files in, source/api/source.")
 endif()
