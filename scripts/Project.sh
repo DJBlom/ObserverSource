@@ -24,7 +24,10 @@ BUILD_TYPE="Debug"
 BUILD_DIR=build
 
 
-rm -rf $BUILD_DIR/*
+if [[ -d $BUILD_DIR ]];
+then
+    rm -rf $BUILD_DIR/*
+fi
 
 DeployTargetBuild()
 {
