@@ -15,17 +15,8 @@ namespace Device {
             VideoCamera();
             VideoCamera(const VideoCamera& rhs) : camera{rhs.camera} {}
             VideoCamera(VideoCamera&& rhs) : camera{std::move(rhs.camera)} {}
-            VideoCamera& operator=(const VideoCamera& rhs)
-            {
-               VideoCamera temp{rhs};
-               std::swap(temp, *this);
-               return *this;
-            }
-            VideoCamera& operator=(VideoCamera&& rhs)
-            {
-                std::swap(camera, rhs.camera);
-                return *this;
-            }
+            VideoCamera& operator= (const VideoCamera& rhs) noexcept;
+            VideoCamera& operator= (VideoCamera&& rhs) noexcept;
             virtual ~VideoCamera();
 
             [[nodiscard]] virtual bool IsOpened() const noexcept override;

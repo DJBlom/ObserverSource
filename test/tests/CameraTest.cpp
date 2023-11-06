@@ -7,7 +7,6 @@
  ******************************************************************************/
 #include <opencv2/opencv.hpp>
 
-//#include <VideoCamera.h>
 #include <CameraMock.h>
 
 #include "CppUTest/TestHarness.h"

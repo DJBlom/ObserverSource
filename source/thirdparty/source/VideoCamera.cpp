@@ -16,6 +16,21 @@ Device::VideoCamera::VideoCamera() //LCOV_EXCL_START
 }
 
 
+Device::VideoCamera& Device::VideoCamera::operator= (const VideoCamera& rhs) noexcept
+{
+    VideoCamera temp{rhs};
+    std::swap(temp, *this);
+    return *this;
+}
+
+
+Device::VideoCamera& Device::VideoCamera::operator= (VideoCamera&& rhs) noexcept
+{
+    std::swap(camera, rhs.camera);
+    return *this;
+}
+
+
 Device::VideoCamera::~VideoCamera()
 {
     this->camera.release();

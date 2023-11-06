@@ -15,17 +15,8 @@ namespace Mock {
             CameraMock() : constructed{true} {}
             CameraMock(const CameraMock& copy) : camera{copy.camera} {}
             CameraMock(CameraMock&& rhs) : camera{std::move(rhs.camera)} {}
-            CameraMock& operator=(const CameraMock& rhs)
-            {
-               CameraMock temp{rhs};
-               std::swap(temp, *this);
-               return *this;
-            }
-            CameraMock& operator=(CameraMock&& rhs)
-            {
-                std::swap(camera, rhs.camera);
-                return *this;
-            }
+            CameraMock& operator= (const CameraMock& rhs) noexcept;
+            CameraMock& operator= (CameraMock&& rhs) noexcept;
             virtual ~CameraMock()
             {
                 constructed = false;
