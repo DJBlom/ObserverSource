@@ -24,10 +24,11 @@ Mock::CameraMock& Mock::CameraMock::operator=(CameraMock&& rhs) noexcept
 }
 
 
-[[nodiscard]] bool Mock::CameraMock::IsOpened() const noexcept
+[[nodiscard]] bool Mock::CameraMock::Open() noexcept
 {
-    return mock().actualCall("IsOpened").returnBoolValue();
+    return mock().actualCall("Open").returnBoolValue();
 }
+
 
 [[nodiscard]] cv::Mat Mock::CameraMock::ReadFrame() noexcept
 {

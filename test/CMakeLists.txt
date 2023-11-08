@@ -25,6 +25,7 @@ set(TEST_SOURCES
 set(PROJECT_SOURCES
     ${CMAKE_SOURCE_DIR}/source/system/source/Control.cpp
     ${CMAKE_SOURCE_DIR}/source/system/source/Services.cpp
+    ${CMAKE_SOURCE_DIR}/source/thirdparty/source/VideoCamera.cpp
     ${CMAKE_SOURCE_DIR}/source/api/source/BinarySemaphore.cpp
     ${CMAKE_SOURCE_DIR}/source/api/source/RealtimeThread.cpp
     ${CMAKE_SOURCE_DIR}/source/api/source/PrioInheritMutex.cpp

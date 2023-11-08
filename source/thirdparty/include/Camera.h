@@ -13,7 +13,7 @@ namespace Interface {
         public:
             virtual ~Camera() = default;
 
-            [[nodiscard]] virtual bool IsOpened() const = 0;
+            [[nodiscard]] virtual bool Open() = 0;
             [[nodiscard]] virtual cv::Mat ReadFrame() = 0;
     };
 }

@@ -8,6 +8,7 @@
 #include <opencv2/opencv.hpp>
 
 #include <CameraMock.h>
+//#include <VideoCamera.h>
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
@@ -36,22 +37,25 @@ extern "C"
  ******************************************************************************/
 TEST_GROUP(CameraTest)
 {
-    Mock::CameraMock camera;
+    Device::VideoCamera* camera;
+    //Mock::CameraMock camera;
     void setup()
     {
+        camera = new Mock::CameraMock();
     }
 
     void teardown()
     {
+        delete camera;
         mock().clear();
     }
 };
 
 
-TEST(CameraTest, TheCameraOpensTheDeviceFileOnConstructionAndIsReadyForStreaming)
+TEST(CameraTest, OpenTheCamera)
 {
-    mock().expectOneCall("IsOpened").andReturnValue(true);
-    CHECK_EQUAL(true, camera.IsOpened());
+    mock().expectOneCall("Open").andReturnValue(true);
+    CHECK(camera->Open());
 
     mock().checkExpectations();
 }
@@ -60,6 +64,7 @@ TEST(CameraTest, TheCameraOpensTheDeviceFileOnConstructionAndIsReadyForStreaming
 TEST(CameraTest, CaptureVideoFrames)
 {
     mock().expectOneCall("ReadFrame");
-    cv::Mat frame = camera.ReadFrame();
+    cv::Mat frame = camera->ReadFrame();
+
     mock().checkExpectations();
 }

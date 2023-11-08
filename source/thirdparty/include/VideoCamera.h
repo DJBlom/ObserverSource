@@ -13,13 +13,14 @@ namespace Device {
     class VideoCamera : public Interface::Camera {
         public:
             VideoCamera();
+            VideoCamera(const int& width, const int& height);
             VideoCamera(const VideoCamera& rhs) : camera{rhs.camera} {}
             VideoCamera(VideoCamera&& rhs) : camera{std::move(rhs.camera)} {}
             VideoCamera& operator= (const VideoCamera& rhs) noexcept;
             VideoCamera& operator= (VideoCamera&& rhs) noexcept;
             virtual ~VideoCamera();
 
-            [[nodiscard]] virtual bool IsOpened() const noexcept override;
+            [[nodiscard]] virtual bool Open() noexcept override;
             [[nodiscard]] virtual cv::Mat ReadFrame() noexcept override;
 
     private:

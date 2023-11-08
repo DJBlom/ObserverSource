@@ -1,34 +1,41 @@
 /*******************************************************************************
-* Contents: VideoCamera definition
-* Author: Dawid Blom
-* Date: November 2, 2023
-*
-* Note:
-******************************************************************************/
+ * Contents: VideoCamera definition
+ * Author: Dawid Blom
+ * Date: November 2, 2023
+ *
+ * Note:
+ ******************************************************************************/
 #include <VideoCamera.h>
 
 
 Device::VideoCamera::VideoCamera() //LCOV_EXCL_START
 {
-    if (this->camera.open(0, cv::CAP_V4L2) == false)
-        throw System::Errors::construction;
+    this->camera.set(cv::CAP_PROP_FRAME_WIDTH, 640);
+    this->camera.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
     //LCOV_EXCL_STOP
 }
 
 
-Device::VideoCamera& Device::VideoCamera::operator= (const VideoCamera& rhs) noexcept
+Device::VideoCamera::VideoCamera(const int& width, const int& height) //LCOV_EXCL_START
+{
+    this->camera.set(cv::CAP_PROP_FRAME_WIDTH, width);
+    this->camera.set(cv::CAP_PROP_FRAME_HEIGHT, height);
+} //LCOV_EXCL_LINE
+
+
+Device::VideoCamera& Device::VideoCamera::operator= (const VideoCamera& rhs) noexcept //LCOV_EXCL_START
 {
     VideoCamera temp{rhs};
     std::swap(temp, *this);
     return *this;
-}
+} //LCOV_EXCL_LINE
 
 
-Device::VideoCamera& Device::VideoCamera::operator= (VideoCamera&& rhs) noexcept
+Device::VideoCamera& Device::VideoCamera::operator= (VideoCamera&& rhs) noexcept //LCOV_EXCL_START
 {
     std::swap(camera, rhs.camera);
     return *this;
-}
+} //LCOV_EXCL_LINE
 
 
 Device::VideoCamera::~VideoCamera()
@@ -37,17 +44,23 @@ Device::VideoCamera::~VideoCamera()
 }
 
 
-[[nodiscard]] bool Device::VideoCamera::IsOpened() const noexcept
+[[nodiscard]] bool Device::VideoCamera::Open() noexcept //LCOV_EXCL_START
 {
-    return camera.isOpened();
+    bool isOpen{true};
+    if (this->camera.open(0, cv::CAP_V4L2) == false)
+        isOpen = false;
+
+    return isOpen;
+    //LCOV_EXCL_STOP
 }
 
 
-[[nodiscard]] cv::Mat Device::VideoCamera::ReadFrame() noexcept
+[[nodiscard]] cv::Mat Device::VideoCamera::ReadFrame() noexcept //LCOV_EXCL_START
 {
     cv::Mat frame;
     if (this->camera.isOpened() == true) //LCOV_EXCL_START
-        this->camera.read(frame);
+        this->camera >> frame;
 
     return frame;
+    //LCOV_EXCL_STOP
 }
